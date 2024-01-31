@@ -71,7 +71,6 @@ const enterRoomPublic = function (title, type) {
         roomStore.enterRoomPublic(payload)
     } else if (type === '관전자' && props.item.state === '진행') {
         roomStore.isWatcher = true
-
         roomStore.watchersNickname.push(userStore.myNickname)
         roomStore.enterWatchPublicProgress(payload)
     } else {
@@ -86,6 +85,7 @@ const showEnterPWModal = function (type) {
     userType.value = type
     // 플레이어고 진행중이면 진행 중인 게임 들어가지 못하게
     if (type === '플레이어' && props.item.state === '진행') {
+        roomStore.isWatcher = false
         const isPlayingModal = new bootstrap.Modal(document.getElementById('IsPlayingModal'));
         isPlayingModal.show()
     } else {

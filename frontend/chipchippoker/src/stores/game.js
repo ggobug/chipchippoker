@@ -91,7 +91,7 @@ export const useGameStore = defineStore('game', () => {
 
         case "MS007": // 게임 진행
           // 게임 데이터 저장 -> 5초건 텀 두고 데이터 받기..
-
+          receiveStartGame(receiveMessage.value?.data)
           break
 
         case "ME002": // 모두 준비상태가 아닙니다
@@ -246,14 +246,34 @@ export const useGameStore = defineStore('game', () => {
 
   // 게임방 나가기 RECEIVE
   const receiveExitRoom = function(data){
-    countOfPeople.value = data.countOfPeople
-    player.value = data.memberInfos
-    roomManagerNickname.value = data.roomManagerNickname
+    // 내가 나갈때
+    if(data.memberInfos.nickname === userStore.myNickname){
+      // 게임 관련 데이터 초기화 시켜주기
+      roomInfo.value = {}
+      player.value = []
+      roomManagerNickname.value = ''
+      countOfPeople.value = 0
+      myId.value = ''
+      isMatch.value = false
+      roundState.value = false
+      currentRound.value = 0
+      yourTurn.value = null
+      gameMemberInfos.value = []
+      bettingCoin.value = 0
+      // 구독 취소하고 메인페이지로 보내기
+      stompClient.unsubscribe(myId.value)
+      router.push({
+        name:'main'
+      })
 
-    stompClient.unsubscribe(myId.value)
-    router.push({
-      name:'main'
-    })
+    } else {
+      countOfPeople.value = data.countOfPeople
+      roomManagerNickname.value = data.roomManagerNickname
+      // 나가는 사람 player와 gameMemberInfos에서 삭제
+      const outMemeberIdx = player.value.indexOf(data.memberInfos.nickname)
+      player.value.splice(outMemeberIdx, 1)
+      gameMemberInfos.value.splice(outMemeberIdx, 1)
+    }    
   }
 
   // 게임 준비 SEND
@@ -279,6 +299,7 @@ export const useGameStore = defineStore('game', () => {
 
   // 게임 시작 RECEIVE
   const receiveStartGame = function (data) {
+    // 게임 시작이라면 게임방으로 이동시켜주기
     if (currentRound.value === 0) {
       router.push({
         name:'play',
@@ -286,14 +307,15 @@ export const useGameStore = defineStore('game', () => {
       }) 
     }
 
+    // 게임 진행이라면 5초간 텀 두고 데이터 받아서 갱신시켜주기
     setTimeout(()=>{
-      roundState.value = receiveMessage.value?.data?.roundState
-      currentRound.value = receiveMessage.value?.data?.currentRound
-      yourTurn.value = receiveMessage.value?.data?.yourTurn
-
+      roundState.value = data?.roundState
+      currentRound.value = data?.currentRound
+      yourTurn.value = data?.yourTurn
+      gameMemberInfos.value = []
       for (let i = 0; i < player.value.length; i++) {
         // 플레이어 순서에 맞게 데이터 넣기
-        const item = receiveMessage.value?.data?.gameMemberInfos.filter((p)=>
+        const item = data?.gameMemberInfos.filter((p)=>
         {p.nickname === player.value[i]})
         gameMemberInfos.value.push(item)
       }

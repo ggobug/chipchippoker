@@ -199,7 +199,7 @@
             </div>
             <div class="mt-5 d-flex justify-content-around">
                 <button class="custom-btn btn-2" data-bs-dismiss="modal" style="width: 50px;"><span>게임하기</span><span>아니요</span></button>
-                <button class="custom-btn btn-3" data-bs-dismiss="modal" @click="leaveSession()"><span>나가?</span><span>나가기</span></button>
+                <button class="custom-btn btn-3" data-bs-dismiss="modal" @click="leaveRoom()"><span>나가?</span><span>나가기</span></button>
             </div>
           </div>
       
@@ -333,6 +333,11 @@
     }
   }
   
+  const leaveRoom = function() {
+  gameStore.sendExitRoom()
+  openviduStore.leaveSession()
+  }
+
   /// 관전을 위한 변수들 크헝헝
   const playersComputed = computed(() => openviduStore.players);
   const watchersComputed = computed(() => openviduStore.watchers);
