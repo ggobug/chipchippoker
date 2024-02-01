@@ -1,0 +1,21 @@
+networks:
+  isolation-network:
+    driver: bridge
+
+services:
+  openvidu-client:
+    container_name: signal-server-1
+    build:
+      context: ./openvidu-basic-node
+      dockerfile: Dockerfile
+    ports:
+      - "8500:8500"
+    networks:
+      - isolation-network
+  openvidu:
+    image: openvidu/openvidu-dev:2.29.0
+    container_name: openvidu-server-1
+    ports:
+      - "4443:4443"
+    networks:
+      - isolation-network
