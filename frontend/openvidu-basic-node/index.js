@@ -11,9 +11,9 @@ var app = express();
 // Environment variable: PORT where the node server is listening
 var SERVER_PORT = 8500;
 // Environment variable: URL where our OpenVidu server is listening
-var OPENVIDU_URL = "http://openvidu-server-1:4443";
+var OPENVIDU_URL = "https://chipchippoker.shop";
 // Environment variable: secret shared with our OpenVidu server
-var OPENVIDU_SECRET = "MY_SECRET";
+var OPENVIDU_SECRET = "CCP_VIDU";
 
 // Enable CORS support
 app.use(
@@ -37,6 +37,10 @@ app.use(express.static(__dirname + "/public"));
 server.listen(SERVER_PORT, () => {
   console.log("Application started on port: ", SERVER_PORT);
   console.warn("Application server connecting to OpenVidu at " + OPENVIDU_URL);
+});
+
+app.get("/signal-server/test", async (req, res) => {
+  res.send("hi");
 });
 
 app.post("/signal-server/sessions", async (req, res) => {
