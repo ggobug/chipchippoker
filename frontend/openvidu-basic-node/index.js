@@ -45,10 +45,14 @@ app.get("/signal-server/test", async (req, res) => {
 
 app.post("/signal-server/sessions", async (req, res) => {
   var session = await openvidu.createSession(req.body);
+  res.setHeader('Access-Control-Allow-origin', '*');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.send(session.sessionId);
 });
 
 app.post("/signal-server/sessions/:sessionId/connections", async (req, res) => {
+  res.setHeader('Access-Control-Allow-origin', '*');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
   var session = openvidu.activeSessions.find(
     (s) => s.sessionId === req.params.sessionId
   );
