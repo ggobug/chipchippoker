@@ -15,8 +15,42 @@
               <UserVideoVue :stream-manager="findVideo(playersComputed, player.nickname)" />
             </div>
 
-            <!-- 뒤집 카드 -->
-            <div class="flip-card" id="flip-card">
+            <!-- 내 카드 -->
+            <div class="flip-card" v-if="player.nickname === userStore.myNickname" id='myCard'>
+              <h1 class="text-white">내 카 드</h1>
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                  <!-- <img :src="getCardUrl(0, 0)" alt="뒷면카드"> -->
+                  <img :src="getCardUrl(player.cardInfo?.cardSet, player.cardInfo?.cardNumber)" alt="앞장">
+                </div>
+                <div class="flip-card-back">
+                  <img :src="getCardUrl(player.cardInfo?.cardSet, player.cardInfo?.cardNumber)" alt="앞장">
+                </div>
+              </div>
+            </div>
+            <!-- 남 카드 -->
+            <div class="flip-card" v-else id='otherCard'>
+              <h1 class="text-white">상대 카드</h1>
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                  <!-- <img :src="getCardUrl(0, 0)" alt="뒷면카드"> -->
+                  <img :src="getCardUrl(player.cardInfo?.cardSet, player.cardInfo?.cardNumber)" alt="앞장">
+                </div>
+                <div class="flip-card-back">
+                  <img :src="getCardUrl(player.cardInfo?.cardSet, player.cardInfo?.cardNumber)" alt="앞장">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2, 4번 플레이어 -->
+          <div v-else class="d-flex flex-row-reverse h-100 m-2 mt-0">
+            <div class="m-2">
+              <UserVideoVue :stream-manager="findVideo(playersComputed, player.nickname)" />
+            </div>
+            <!-- 내 카드 -->
+            <div class="flip-card" v-if="player.nickname === userStore.myNickname" id='myCard'>
+              <h1 class="text-white">내 카 드</h1>
               <div class="flip-card-inner">
                 <div class="flip-card-front">
                   <img :src="getCardUrl(0, 0)" alt="뒷면카드">
@@ -26,14 +60,9 @@
                 </div>
               </div>
             </div>
-          </div>
-          <!-- 2, 4번 플레이어 -->
-          <div v-else class="d-flex flex-row-reverse h-100 m-2 mt-0">
-            <div class="m-2">
-              <UserVideoVue :stream-manager="findVideo(playersComputed, player.nickname)" />
-            </div>
-            <!-- 뒤집 카드 -->
-            <div class="flip-card" id="flip-card">
+            <!-- 남 카드 -->
+            <div class="flip-card" v-else id='otherCard'>
+              <h1 class="text-white">상 대 카 드</h1>
               <div class="flip-card-inner">
                 <div class="flip-card-front">
                   <img :src="getCardUrl(0, 0)" alt="뒷면카드">
@@ -137,13 +166,25 @@ const getCardUrl = function (setnum, cardnum) {
 };
 
 // 카드 뒤집기
-const flip = () => {
+const flipAll = () => {
   const flipCards = document.querySelectorAll('.flip-card')
-  console.log('카드 뒤집');
+  console.log('다 뒤집');
   flipCards.forEach(flipCard => {
     flipCard.classList.toggle('flipped')
   });
 };
+const flipMe = function () {
+  const flipCard = document.querySelector('#myCard')
+  console.log('내카드 뒤집');
+  flipCard.classList.toggle('flipped')
+}
+const flipOther = function () {
+  const flipCards = document.querySelectorAll('#otherCard')
+  console.log('상대 뒤집');
+  flipCards.forEach(flipCard => {
+    flipCard.classList.toggle('flipped')
+  })
+}
 
 const playersComputed = computed(() => openviduStore.players)
 const publisherComputed = computed(() => openviduStore.publisher)
@@ -161,31 +202,67 @@ const getGameData = function () {
 watch(roundState, (newValue, oldValue) => {
   if (newValue === true && oldValue === false) {
     // 게임 시작시
+    console.log('게임 시작 감지')
     if (gameStore.currentRound === 1) {
       Promise.all([
         // 바로 게임 데이터 받아오기
+        console.log('시작할때 바로 게임 데이터 받아오기'),
         getGameData(),
       ])
         .then(() => {
           //  카드 앞으로 뒤집기 (실행효과가 안보이는 이유 모르겠음)
-          flip()
-        })
+          flipOther()
+        }
+        )
+        .then(() => {
+          setTimeout(() => {
+            console.log('시작할때 상대 카드 앞으로 뒤집기 (실행효과가 안보이는 이유 모르겠음)')
+          }, 400)
+        }
+        )
     } else {
       // 라운드 시작시
+      console.log('라운드 시작 감지')
       Promise.all([
         // 데이터 받아오기
-        getGameData()
+        getGameData(),
+        console.log('내 데이터 받아오기',gameMemberInfos.value),
       ])
-      // 데이터 받아온 뒤에 카드 앞장 뒤집기
-        .then(() => {
-          flip()
+      .then(() => {
+          // 데이터 받아온 뒤에 상대 카드 앞장 뒤집기
+          console.log('데이터 받아온 뒤에 상대 카드 앞장 뒤집기')
+          flipOther()
         })
     }
   }
   // 라운드 종료시
   else if (newValue === false && oldValue === true) {
+    console.log('라운드 종료시')
     // 카드 뒤로 뒤집기
-    flip()
+    Promise.all([
+      // 데이터 받아오기
+      getGameData(),
+      console.log('라운드 종료 데이터 받아오기',gameMemberInfos.value),
+
+    ])
+      .then(() => {
+        flipMe()
+      })
+      .then(() => {
+        setTimeout(() => {
+          console.log('내 카드 뒤로 뒤집기')
+        }, 700)
+      }
+      )
+      .then(() => {
+        flipAll()
+      })
+      .then(() => {
+        setTimeout(() => {
+          console.log('모두의 카드 뒤로 뒤집기')
+        }, 400)
+      }
+      )
   }
 })
 
@@ -210,8 +287,8 @@ onMounted(() => {
       console.error('카메라 및 마이크 액세스 오류:', error);
     });
 
-    openviduStore.joinSession()
-  })
+  openviduStore.joinSession()
+})
 </script>
 
 <style scoped>
