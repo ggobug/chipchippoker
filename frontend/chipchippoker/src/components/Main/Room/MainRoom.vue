@@ -2,7 +2,7 @@
     <div class="d-flex flex-column gap-3" style="height: 530px; width: 750px;">
         <div class="d-flex justify-content-between align-items-center w-100 gap-3">
         <!-- 인원수 필터 선택 -->
-        <div class="d-flex">
+        <div class="d-flex ps-3">
             <div class="form-check ">
                 <input v-model="isTwo" @change="updateRoomList" class="form-check-input " type="checkbox" value="" id="two">
                 <label class="form-check-label x-little-text" for="two">
@@ -185,6 +185,11 @@ onMounted (() => {
 .form-check {
     margin-left: 10px;
     margin-right: 10px;
+    font-size: 15px;
+    cursor: pointer;
+}
+.form-check-label {
+    font-size: 13px;
 }
 
 .nav-tabs .nav-link.active {
