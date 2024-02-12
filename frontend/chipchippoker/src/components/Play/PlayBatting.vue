@@ -104,7 +104,7 @@
       <div class="row col-12 justify-content-between" v-if="gameStore.memberInfos && gameStore.memberInfos.length > 2">
 
         <!-- 3번 플레이어 -->
-        <div class="row col-5" v-if="gameStore.memberInfos && gameStore.memberInfos.length > 2">
+        <div class="row col-6" v-if="gameStore.memberInfos && gameStore.memberInfos.length > 2">
           <!-- 카드 -->
           <div class="col-5">
             <!-- 뒤집을 카드 -->
