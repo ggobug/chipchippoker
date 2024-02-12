@@ -61,8 +61,16 @@ export const useGameStore = defineStore('game', () => {
   const currentRound = ref(0)
   const yourTurn = ref(null)
   const gameMemberInfos = ref([])
-  const bettingCoin = ref(0)
-  console.log(stompClient.ws);
+  // console.log(stompClient.ws);
+
+
+  // 게임 데이터 임시 저장
+  // 그러면 웹소켓 베팅 응답오면 다 여기에 저장 ?
+  const nextRoundState = ref(false)
+  const nextCurrentRound = ref(0)
+  const nextYourTurn = ref(null)
+  const nextGameMemberInfos = ref([])
+  
 
   // 배팅 잘못했을 때 모달
   const notMatchRound = ref(false)
@@ -80,11 +88,10 @@ export const useGameStore = defineStore('game', () => {
   }
   console.log(stompClient)
 
-  // connectHandler()
+  // 웹소켓 연결 핸들러
   const connectHandler = function () {
     stompClient.connect({ 'access-token': userStore.accessToken }, (frame) => {
       console.log("Connect success", gameRoomTitle.value)
-      console.log();
       // stompClient.heartbeat.outgoing = 5000;
       // stompClient.heartbeat.incoming = 0;
       console.log(stompClient);
@@ -142,28 +149,28 @@ export const useGameStore = defineStore('game', () => {
             if (firstStart.value === false) {
               firstStart.value = true
               setTimeout(() => {
-                roundState.value = response.data.roundState
-                currentRound.value = response.data.currentRound
-                yourTurn.value = response.data.yourTurn
-                gameMemberInfos.value = response.data.gameMemberInfos
+                nextRoundState.value = response.data.roundState
+                nextCurrentRound.value = response.data.currentRound
+                nextYourTurn.value = response.data.yourTurn
+                nextGameMemberInfos.value = response.data.gameMemberInfos
               }, 100)
             } else if(roundState.value === false) {
               // 새로운 라운드 저장할때는 2초 미루기
               setTimeout(() => {
-                roundState.value = response.data.roundState
-                currentRound.value = response.data.currentRound
-                yourTurn.value = response.data.yourTurn
-                gameMemberInfos.value = response.data.gameMemberInfos
+                nextRoundState.value = response.data.roundState
+                nextCurrentRound.value = response.data.currentRound
+                nextYourTurn.value = response.data.yourTurn
+                nextGameMemberInfos.value = response.data.gameMemberInfos
                 // console.log('라운드 저장 2초 미룸');
 
               }, 4000)
             } else{
               // 배팅은 1초 미루기
               setTimeout(() => {
-                roundState.value = response.data.roundState
-                currentRound.value = response.data.currentRound
-                yourTurn.value = response.data.yourTurn
-                gameMemberInfos.value = response.data.gameMemberInfos
+                nextRoundState.value = response.data.roundState
+                nextCurrentRound.value = response.data.currentRound
+                nextYourTurn.value = response.data.yourTurn
+                nextGameMemberInfos.value = response.data.gameMemberInfos
                 // console.log('배팅 저장1초 미룸');
               }, 1000)
             }
@@ -325,25 +332,6 @@ export const useGameStore = defineStore('game', () => {
     })
   }
 
-
-  // 게임 종료 후 다시 대기방 입장 RECEIVE
-  const receiveWaitRoom = function (data) {
-    countOfPeople.value = data.countOfPeople
-    memberInfos.value = data.memberInfos
-    roomManagerNickname.value = data.roomManagerNickname
-    winnerNickname.value = ''
-    roomInfo.value = {}
-    totalCountOfPeople.value = 0
-    myOrder.value = 0
-    isMatch.value = false
-    roundState.value = false
-    currentRound.value = 0
-    yourTurn.value = null
-    gameMemberInfos.value = []
-    bettingCoin.value = 0
-    memberEndGameInfos.value = []
-  }
-
   // 게임방 나가기 SEND
   const sendExitRoom = function (gameRoomTitle) {
     stompClient.send(`/to/game/exit/${gameRoomTitle}`, JSON.stringify({}), { 'access-token': userStore.accessToken })
@@ -413,6 +401,7 @@ export const useGameStore = defineStore('game', () => {
     memberInfos.value = data.memberInfos
     roomManagerNickname.value = data.roomManagerNickname
   }
+
   // 강퇴 본인
   const receiveBanMe = function (message) {
     // 게임 관련 데이터 초기화 시켜주기
@@ -424,11 +413,12 @@ export const useGameStore = defineStore('game', () => {
   // 라운드 종료
   const receiveRoundFinish = function (data) {
     console.log('라운드 종료');
-    roundState.value = data?.roundState
-    currentRound.value = data?.currentRound
-    yourTurn.value = data?.yourTurn
-    gameMemberInfos.value = data?.gameMemberInfos
+    nextRoundState.value = data?.roundState
+    nextCurrentRound.value = data?.currentRound
+    nextYourTurn.value = data?.yourTurn
+    nextGameMemberInfos.value = data?.gameMemberInfos
     winnerNickname.value = data?.winnerNickname
+
     console.log("roundState", roundState.value);
     console.log("currentRound", currentRound.value);
     console.log("yourTurn", yourTurn.value);
@@ -477,13 +467,16 @@ export const useGameStore = defineStore('game', () => {
     currentRound.value = 0
     yourTurn.value = null
     gameMemberInfos.value = []
-    bettingCoin.value = 0
     subscriptionSpectation.value = undefined
     mySpectateSubId.value = []
     watchersNickname.value = []
     memberEndGameInfos.value = []
     playerEmotion.value = {}
     showEmotionNickname.value = userStore.myNickname
+    nextRoundState.value = false
+    nextCurrentRound.value = 0
+    nextYourTurn.value = null
+    nextGameMemberInfos.value = []
   }
 
   //---------------------------------------------------관전--------------------------------------------------------
@@ -544,28 +537,28 @@ export const useGameStore = defineStore('game', () => {
           if (firstStart.value === false) {
             firstStart.value = true
             setTimeout(() => {
-              roundState.value = response.data.roundState
-              currentRound.value = response.data.currentRound
-              yourTurn.value = response.data.yourTurn
-              gameMemberInfos.value = response.data.gameMemberInfos
+              nextRoundState.value = response.data.roundState
+              nextCurrentRound.value = response.data.currentRound
+              nextYourTurn.value = response.data.yourTurn
+              nextGameMemberInfos.value = response.data.gameMemberInfos
             }, 100)
           } else if(roundState.value === false) {
             // 새로운 라운드 저장할때는 2초 미루기
             setTimeout(() => {
-              roundState.value = response.data.roundState
-              currentRound.value = response.data.currentRound
-              yourTurn.value = response.data.yourTurn
-              gameMemberInfos.value = response.data.gameMemberInfos
+              nextRoundState.value = response.data.roundState
+              nextCurrentRound.value = response.data.currentRound
+              nextYourTurn.value = response.data.yourTurn
+              nextGameMemberInfos.value = response.data.gameMemberInfos
               // console.log('라운드 저장 2초 미룸');
 
             }, 4000)
           } else{
             // 배팅은 1초 미루기
             setTimeout(() => {
-              roundState.value = response.data.roundState
-              currentRound.value = response.data.currentRound
-              yourTurn.value = response.data.yourTurn
-              gameMemberInfos.value = response.data.gameMemberInfos
+              nextRoundState.value = response.data.roundState
+              nextCurrentRound.value = response.data.currentRound
+              nextYourTurn.value = response.data.yourTurn
+              nextGameMemberInfos.value = response.data.gameMemberInfos
               // console.log('배팅 저장1초 미룸');
             }, 1000)
           }
@@ -620,6 +613,13 @@ export const useGameStore = defineStore('game', () => {
     resetGameStore,
     playerEmotion,
     showEmotionNickname,
+
+    // 임시 저장데이터
+    nextRoundState,
+    nextCurrentRound,
+    nextYourTurn,
+    nextGameMemberInfos,
+
     // 구독 정보
     subscriptionGame, myGameSubId,
 

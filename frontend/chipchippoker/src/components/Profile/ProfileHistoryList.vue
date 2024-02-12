@@ -109,9 +109,9 @@ onMounted(() => {
   // 스크롤 최상단에 두기
   const ulTag = document.querySelector('ul')
   console.log(ulTag);
-  ulTag.scrollTop = ulTag.scrollHeight
-  console.log(ulTag.scrollHeight);
-  console.log(ulTag.scrollTop);
+  // ulTag.scrollTop = ulTag.scrollHeight
+  // console.log(ulTag.scrollHeight);
+  // console.log(ulTag.scrollTop);
 
 });
 </script>

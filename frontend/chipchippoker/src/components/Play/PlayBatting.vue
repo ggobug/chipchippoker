@@ -146,7 +146,7 @@
 
 <script setup>
 import { useGameStore } from '@/stores/game';
-
+import { watch,computed, ref } from 'vue';
 const gameStore = useGameStore()
 const getCoinUrl = function (num) {
   return new URL(`/src/assets/coins/coin${num}.png`, import.meta.url).href;
@@ -156,6 +156,49 @@ const getCoinUrl = function (num) {
 const getCardUrl = function (setnum, cardnum) {
   return new URL(`/src/assets/cards/set${setnum}/card${cardnum}.png`, import.meta.url).href;
 };
+
+// 데이터 저장하기
+const updateData = function(){
+  gameStore.roundState = gameStore.nextRoundState
+  gameStore.currentRound = gameStore.nextCurrentRound
+  gameStore.yourTurn = gameStore.nextYourTurn
+  gameStore.gameMemberInfos = gameStore.nextGameMemberInfos
+  console.log('데이터 새로 저장');
+}
+
+const nextRoundState = computed(() => gameStore.nextRoundState); // 현재 라운드 상태 (ex. 진행중)
+const nextCurrentRound = computed(() => gameStore.nextCurrentRound) // 현재 라운드
+
+// 라운드 상태 감지
+watch(() => nextRoundState.value, (newValue, oldValue) => {
+  console.log('라운드 변경');
+  if (newValue === true && oldValue === false) {
+    if (gameStore.nextCurrentRound === 1) {
+      console.log('게임시작');
+      // 게임 시작
+      updateData()
+      
+    } else {
+      // 라운드 시작
+      console.log('라운드시작');
+      updateData()
+    }
+  }
+  else if (newValue === false && oldValue === true) {
+    // 라운드 종료
+    console.log('라운드종료');
+    updateData()
+  }
+})
+
+// 턴 변화
+const nextYourTurn = computed(() => gameStore.nextYourTurn);
+
+watch(() => nextYourTurn.value, (newValue, oldValue) => {
+  console.log('턴 변경');
+  updateData()
+})
+
 </script>
 
 <style scoped>
