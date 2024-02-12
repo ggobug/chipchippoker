@@ -8,8 +8,8 @@
 }
 
 .flip-card {
-    width: 160px;
-    height: 224px;
+    width: 100px;
+    /* height: 224px; */
     perspective: 1000px;
 }
 
@@ -46,22 +46,22 @@
 }
 
 .card-devide-move1 {
-    transform: translate(200px, 200px);
+    transform: translate(-200px, -200px);
     transition: 1s;
 }
 
 .card-devide-move2 {
-    transform: translate(-200px, 200px);
-    transition: 1s;
-}
-
-.card-devide-move3 {
     transform: translate(200px, -200px);
     transition: 1s;
 }
 
+.card-devide-move3 {
+    transform: translate(-200px, 200px);
+    transition: 1s;
+}
+
 .card-devide-move4 {
-    transform: translate(-200px, -200px);
+    transform: translate(200px, 200px);
     transition: 1s;
 }
 
@@ -103,5 +103,13 @@
 
 .coin-move4 {
     transform: translate(-50%, -50%);
+    transition: 1s;
+}
+.fade-in{
+    opacity: 1;
+    transition: 1s;
+}
+.fade-out{
+    opacity: 0;
     transition: 1s;
 }

@@ -90,21 +90,6 @@
         <PlayEmotionVue/>
       </div>
     </div>
-    <!-- 배팅 오류 모달 -->
-    <!-- <div class="modal fade" id="IsPlayingModal" tabindex="-1" aria-labelledby="IsPlayingModal" aria-hidden="true"> 
-      <div class="modal-dialog modal-dialog-centered" @close="closeModal">
-          <div class="modal-content pb-3" style="background-color: #fff0c0;">
-          <div class="modal-header border-0">
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body d-flex flex-column justify-content-center align-items-center">
-            <h3 v-if="notMatchRound">현재 진행 중인 라운드가 아닙니다.</h3>
-            <h3 v-else-if="notYourTurn">본인의 배팅 차례가 아닙니다.</h3>
-            <h3 v-else-if="cannotBat">배팅 불가능한 코인 개수입니다.</h3>
-        </div>
-        </div>
-      </div>
-    </div> -->
   </div>
 </template>
 
