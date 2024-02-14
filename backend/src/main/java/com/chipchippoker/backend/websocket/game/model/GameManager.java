@@ -301,9 +301,9 @@ public class GameManager {
 	/**
 	 * 대기방에 인원추가
 	 */
-	public void insertMember(String nickname, Boolean isRoomManager) {
+	public void insertMember(String nickname) {
 		memberManagerMap.put(nickname,
-			MemberManager.create(MemberInfo.create(nickname, isRoomManager), MemberGameInfo.create()));
+			MemberManager.create(MemberInfo.create(nickname), MemberGameInfo.create()));
 	}
 
 	/**

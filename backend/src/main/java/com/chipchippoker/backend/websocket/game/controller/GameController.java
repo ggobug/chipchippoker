@@ -60,7 +60,7 @@ public class GameController {
 
 		makeGameManager(gameRoomTitle, createGameRoomMessageRequest, nickname);
 		GameManager gameManager = mapManager.getGameManagerMap().get(gameRoomTitle);
-		gameManager.insertMember(nickname, Boolean.TRUE);
+		gameManager.insertMember(nickname);
 
 		broadcastAllConnected(gameRoomTitle,
 			gameService.AllMemberInfoInReadyRoom(MessageBase.S200_GAME_ROOM_CREATED, gameManager));
@@ -77,7 +77,7 @@ public class GameController {
 		// todo 블랙리스트라면 들어가지 못하게 만들기
 		String nickname = jwtUtil.getNickname(accessToken);
 		GameManager gameManager = mapManager.getGameManagerMap().get(gameRoomTitle);
-		gameManager.insertMember(nickname, Boolean.FALSE);
+		gameManager.insertMember(nickname);
 
 		SpectationManager spectationManager = mapManager.getSpectationManagerMap().get(gameRoomTitle);
 		if (spectationManager == null) {

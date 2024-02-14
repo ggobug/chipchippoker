@@ -11,22 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MemberInfo {
 	private String nickname;
-	private Integer win;
-	private Integer draw;
-	private Integer lose;
-	private Double rate;
 	private Boolean isReady;
-	private Boolean isRoomManager;
 
-	public static MemberInfo create(String nickname, Boolean isRoomManager) {
+	public static MemberInfo create(String nickname) {
 		return MemberInfo.builder()
 			.nickname(nickname)
-			.win(0)
-			.draw(0)
-			.lose(0)
-			.rate(0.0)
 			.isReady(Boolean.FALSE)
-			.isRoomManager(isRoomManager)
 			.build();
 	}
 }
