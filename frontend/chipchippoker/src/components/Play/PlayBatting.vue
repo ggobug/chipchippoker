@@ -50,7 +50,6 @@
 
       <!-- 위쪽 -->
       <div class="row col-12 justify-content-between">
-
         <!-- 1번 플레이어 -->
         <div class="row col-6">
           <!-- 카드 -->
@@ -677,8 +676,7 @@ async function joinCoin(){
   return new Promise(resolve => {
     const time = setTimeout(() => {
       // console.log('승자에게 코인 이동 완료');
-      resolve(); // 생성 완료
-      
+      resolve() // 생성 완료
     }, 1000)
     setTimeList.value.push(time)
   })
@@ -753,5 +751,14 @@ async function joinCoin(){
   width: 100px;
   z-index: 1999;
   position: absolute
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
+  }
 }
 </style>

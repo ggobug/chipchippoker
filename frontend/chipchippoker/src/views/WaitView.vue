@@ -18,12 +18,12 @@
     <div class="container row mt-5 h-100">
       <!-- 캠 -->
       <div class="col-9">
-        <!-- 플레이어 -->
         <!-- 모든 캠 -->
         <div v-if="roomStore.isWatcher===false" id="video-container">
           <div class="flex-container row g-1 p-0">
             <div class="col-6 mb-5 text-center"
-            v-for="(player, index) in gameStore.memberInfos" :key="index">
+              v-for="(player, index) in gameStore.memberInfos" :key="index">
+              <div class="text-white align-self-center ">{{ player.nickname }}</div>
               <div 
                 style="width: 400px; height: 300px;">
                 <UserVideo 

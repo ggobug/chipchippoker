@@ -10,20 +10,20 @@
                 <!-- 인원수 선택 -->
                 <div class="d-flex align-items-center gap-3">
                     <div class="form-check ">
-                        <input v-model="checkedOptions" class="form-check-input " type="radio" value=2 id="two">
-                        <label class="form-check-label" for="two">
+                        <input v-model="checkedOptions" class="form-check-input " type="radio" value=2 id="two2">
+                        <label class="form-check-label" for="two2">
                             2인
                         </label>
                     </div>
                     <div class="form-check ">
-                        <input v-model="checkedOptions" class="form-check-input " type="radio" value=3 id="three">
-                        <label class="form-check-label" for="three">
+                        <input v-model="checkedOptions" class="form-check-input " type="radio" value=3 id="three3">
+                        <label class="form-check-label" for="three3">
                             3인
                         </label>
                     </div>
                     <div class="form-check ">
-                        <input v-model="checkedOptions" class="form-check-input " type="radio" value=4 id="four">
-                        <label class="form-check-label" for="four">
+                        <input v-model="checkedOptions" class="form-check-input " type="radio" value=4 id="four4">
+                        <label class="form-check-label" for="four4">
                             4인
                         </label>
                     </div>

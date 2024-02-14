@@ -39,16 +39,13 @@
         <div class="d-flex flex-column justify-content-center align-items-center text-center">
           <h2 class="fw-bold">게임 결과</h2>
           <div class="" v-for="playerResult in gameStore.memberEndGameInfos" :key="playerResult.nickname">
-            <h3 class="m-3">{{ playerResult.nickname }}님 <span
+            <h3 class="m-3 mb-0">{{ playerResult.nickname }}님 <span
                 :class="[{ 'text-primary': playerResult.isResult == '승' }, { 'text-danger': playerResult.isResult == '패' }]">{{
                   playerResult.isResult }}</span></h3>
             <p v-if="gameStore.kindGame==='경쟁'">pointChange: {{ playerResult.pointChange }}</p>
           </div>
-        </div>
-        <div class="text-center my-3">
           <!-- 매치 종료 후 메인페이지로 이동 -->
-          <h3 type="button" class="btn-outline-yellow rounded-2 p-1 d-inline-block" @click="gotoMain()">메인페이지로 가기</h3>
-          
+            <button type="button" class="btn-2 btn-2-yellow my-3 justify-content-center align-items-center" style="width: 70px; height: 30px; font-size: 15px;" @click="gotoMain()">나가기</button>
         </div>
       </div>
 
