@@ -89,7 +89,6 @@ export const useUserStore = defineStore('user', () => {
         data: payload
       })
       const res = response.data
-      console.log(res.data)
       accessToken.value = res.data.accessToken
       refreshToken.value = res.data.refreshToken
       myIcon.value = res.data.icon
@@ -104,14 +103,12 @@ export const useUserStore = defineStore('user', () => {
 
   // 카카오 인가코드 받기
   const getKakaoCode = function () {
-    console.log('카카오 인가코드 받기')
     Kakao.Auth.authorize({
       redirectUri: REDIRECT_URI,
     })
   }
 
   const getKakaoCodeToSink = function () {
-    console.log('카카오 인가코드 받기')
     Kakao.Auth.authorize({
       redirectUri: REDIRECT_SINK_URI,
     })
@@ -119,8 +116,6 @@ export const useUserStore = defineStore('user', () => {
 
   // 간편 로그인
   const simpleLogInRequest = async function (authorizationCode) {
-    console.log('간편 로그인 요청');
-    console.log(authorizationCode);
     // 인가코드로 로그인 요청
     try {
       const response = await axios({
@@ -129,17 +124,13 @@ export const useUserStore = defineStore('user', () => {
         data: { authorizationCode }
       })
       const res = response.data
-      console.log(response)
       if (res.data.code === 200) {
-        console.log("카카오 로그인 성공!!")
         accessToken.value = res.data.accessToken
         refreshToken.value = res.data.refreshToken
         myIcon.value = res.data.icon
         myNickname.value = res.data.nickname
         router.push({ name: 'main' })
       } else if (res.data.code === 202) {
-        console.log("카카오 로그인 성공, 닉네임 설정!!")
-        console.log(res.data)
         kakaoAccessToken.value = res.data.kakaoAccessToken
         router.push({ name: 'kakaosignup' })
       }
@@ -152,8 +143,6 @@ export const useUserStore = defineStore('user', () => {
 
   // 카카오 회원가입
   const kakaoSignUp = async function(payload){
-    console.log("카카오 회원가입 요청")
-    console.log(payload);
     try {
       const response = await axios({
         method: 'post',
@@ -162,8 +151,6 @@ export const useUserStore = defineStore('user', () => {
         headers: { 'kakao-access-token': kakaoAccessToken.value }
       })
       const res = response.data
-      console.log('카카오 회원가입 성공')
-      console.log(res.data)
       accessToken.value = res.data.accessToken
       refreshToken.value = res.data.refreshToken
       myIcon.value = res.data.icon
@@ -199,7 +186,6 @@ export const useUserStore = defineStore('user', () => {
 
   // 카카오 연동
   const kakaoConnect = async function (authorizationCode) {
-    console.log('카카오 연동 요청!')
     try {
       await axios({
         method: 'post',
@@ -207,7 +193,6 @@ export const useUserStore = defineStore('user', () => {
         data: { authorizationCode },
         headers: { 'access-token': accessToken.value }
       })
-      console.log('카카오 연동 성공!')
       router.push({name:'profile'})
       return true
     } catch (err) {
@@ -347,7 +332,6 @@ export const useUserStore = defineStore('user', () => {
   
   // 프로필 정보 요청
   const getProfileInfo = function(nickname) {
-    console.log(nickname)
     axios({
       method:'get',
       url: `${MEMBERS_API}/profile/${nickname}`,

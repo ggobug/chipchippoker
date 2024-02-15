@@ -265,7 +265,6 @@ const cardPosition = [["-10%", "20%"], ["-10%", "50%"], ["80%", "20%"], ["80%", 
 const getMyIndex = function () {
   const myindex = ref(0)
   gameStore?.gameMemberInfos?.forEach((info, index) => {
-    // console.log(info, index);
     if (info.nickname === userStore.myNickname) {
       myindex.value = index + 1
     }
@@ -301,7 +300,6 @@ const getCardUrl = function (setnum, cardnum) {
 
 // 데이터 저장하기
 async function updateData () {
-  // console.log('데이터 새로 저장');
   gameStore.roundState = gameStore.nextRoundState
   gameStore.yourTurn = gameStore.nextYourTurn
   gameStore.currentRound = gameStore.nextCurrentRound
@@ -311,7 +309,6 @@ async function updateData () {
 
 // 배팅코인과 카드데이터만 받아옴
 async function updateEndData () {
-  // console.log('마지막데이터 새로 저장');
   gameStore.roundState = gameStore.nextRoundState
   gameStore.currentRound = gameStore.nextCurrentRound
   gameStore.yourTurn = gameStore.nextYourTurn
@@ -337,14 +334,11 @@ async function updateEndData () {
 // videoElement.addEventListener('ended', () => {
 //   gameStart.value = false
 //   videoElement.remove()
-  // console.log(gameStart.value)
-  // console.log('비디오 재생 완료!')
 //   startRoundAnimation()
 // })
 
 // 애니메이션 진행 상태 토글
 async function toggleAnimationState () {
-  console.log(gameStore.isAnimationRunning, !gameStore.isAnimationRunning);
   gameStore.isAnimationRunning = !gameStore.isAnimationRunning
 }
 
@@ -364,7 +358,6 @@ async function startRoundAnimation () {
     // 3. 분배 완료 후 카드 사라짐 (FadeoutCard)
     await createCard()
     await moveCard()
-    // await removeCard()
     await flipCard()
     await toggleAnimationState()
 }
@@ -375,13 +368,9 @@ async function startGameAnimation () {
   await toggleAnimationState()
   // 1. 플레이페이지 진입하면 텍스트 애니메이션 (3초 정도)
   gameStart.value = true
-  // console.log('게임 비디오 시작', gameStart.value)
 
   const time = setTimeout(()=>{
     gameStart.value = false
-    // console.log('비디오 끌거임');
-    // // const videoElement = document.getElementById('video')
-    // videoElement.remove()
     startRoundAnimation()
   },5000)
   setTimeList.value.push(time)
@@ -391,20 +380,15 @@ async function startGameAnimation () {
 // 라운드 변경 이벤트
 watch(() => nextRoundState.value, (newValue, oldValue) => {
   if ( newValue === 0){
-    // console.log('게임 종료했음')
   } else{
-    // console.log('라운드 변경')
     if (newValue === true && oldValue === false) {
       if (gameStore.nextCurrentRound === 1) {
-        // console.log('게임시작')
         // 게임 시작
         startGameAnimation()
         updateData()
 
       } else {
         // 라운드 시작
-        // console.log('라운드시작')
-
         startRoundAnimation()
         updateData()
         updateTotalBettingCoin()
@@ -413,7 +397,6 @@ watch(() => nextRoundState.value, (newValue, oldValue) => {
     }
     else if (newValue === false && oldValue === true) {
       // 라운드 종료
-      console.log('라운드종료')
       updateEndData()
       updateTotalBettingCoin()
       // setTimeList.value.forEach(time => {
@@ -427,21 +410,16 @@ watch(() => nextRoundState.value, (newValue, oldValue) => {
 
 // 턴 변경 이벤트
 watch(() =>[ nextYourTurn.value, nextRoundState.value], (newValue, oldValue) => {
-  // console.log('턴 변경')
-  console.log(newValue, oldValue);
   // updateData()
 })
 
 // 배팅 이벤트
 watch(() => bettingEvent.value, (newValue, oldValue) => {
-  // console.log('배팅 관련 무언가 변화', newValue, oldValue);
   if (newValue === true && oldValue === false) {
-    console.log('배팅 이벤트 발생')
     updateData()
     gameStore.bettingEvent = false
     // 코인 배팅 (코인 움직이기)
-    bettingCoin()
-
+    // bettingCoin()
   }
 })
 
@@ -469,8 +447,6 @@ async function endRoundAnimation () {
 
 // 카드 생성 (가운데)
 async function createCard() {
-  // console.log("카드 생성");
-
   for (let i = 1; i < gameStore.memberInfos.length+1; i++) {
     const cardElement = document.getElementById(`card-deck${i}`)
     cardElement.classList.remove(`card-devide-move${i}`)
@@ -478,7 +454,6 @@ async function createCard() {
   }
   return new Promise(resolve => {
     const time = setTimeout(() => {
-      // console.log('카드 생성 애니메이션 완료');
       resolve() // 생성 완료
     }, 1000)
     setTimeList.value.push(time)
@@ -487,7 +462,6 @@ async function createCard() {
 
 // 카드 분배
 async function moveCard() {
-  // console.log("카드 분배")
   for (let i = 1; i < gameStore.memberInfos.length+1; i++) {
     const cardElement = document.getElementById(`card-deck${i}`)
     cardElement.classList.add(`card-devide-move${i}`)
@@ -496,7 +470,6 @@ async function moveCard() {
   return new Promise(resolve => {
     soundStore.cardshuffleSound()
     const time = setTimeout(() => {
-      // console.log('카드 분배 애니메이션 완료');
       resolve(); // 생성 완료
     }, 1000)
     setTimeList.value.push(time)
@@ -505,14 +478,12 @@ async function moveCard() {
 
 // 카드 페이드아웃
 async function fadeOutCard() {
-  // console.log("카드 페이드아웃")
   for (let i = 1; i < gameStore.memberInfos.length+1; i++) {
     const cardElement = document.getElementById(`card-deck${i}`)
     cardElement.classList.add(`fade-out`)
   }
   return new Promise(resolve => {
     const time = setTimeout(() => {
-      // console.log('카드 페이드아웃 애니메이션 완료')
       resolve(); // 생성 완료
     }, 2000)
     setTimeList.value.push(time)
@@ -527,7 +498,6 @@ async function removeCard() {
         const cardElement = document.getElementById(`card-deck${i}`)
         cardElement.remove()
       }
-      // console.log('카드 제거 애니메이션 완료')
       resolve(); // 생성 완료
     }, 1000)
     setTimeList.value.push(time)
@@ -540,7 +510,6 @@ async function removeCardEnd() {
         const cardElement = document.getElementById(`end-card${i}`)
         cardElement.remove()
       }
-      // console.log('카드 제거 애니메이션 완료')
       resolve(); // 생성 완료
     }, 1000)
     setTimeList.value.push(time)
@@ -556,7 +525,6 @@ async function filpMyCard() {
   
     return new Promise(resolve => {
       const time = setTimeout(() => {
-        // console.log('카드 모으기 애니메이션 완료');
         resolve(); // 생성 완료
       }, 1000)
       setTimeList.value.push(time)
@@ -577,7 +545,6 @@ async function flipCard() {
   }
   return new Promise(resolve => {
     const time = setTimeout(() => {
-      // console.log('카드 모으기 애니메이션 완료')
       resolve(); // 생성 완료
     }, 1000)
     setTimeList.value.push(time)
@@ -592,7 +559,6 @@ async function flipCardBack() {
     }
   return new Promise(resolve => {
     const time = setTimeout(() => {
-      // console.log('카드 모으기 애니메이션 완료');
       resolve(); // 생성 완료
     }, 1000)
     setTimeList.value.push(time)
@@ -601,8 +567,6 @@ async function flipCardBack() {
 
 // 카드 모으기 (라운드 승패 판단)
 async function joinCard () {
-  // console.log('카드 모으기')
-
   const container = document.getElementById('bettingField');
 
   gameStore.gameMemberInfos.forEach((data, index) => {
@@ -639,7 +603,11 @@ async function joinCard () {
       // 패널티 부여
       gameStore?.penaltyInfos?.forEach(info => {
         if (info.nickname === data.nickname) {
-          LoserTag.innerText = `패 (패널티:-${info.penaltyCoin})`
+          const penaltyTag = document.createElement('span')
+          penaltyTag.innerText = `(패널티: -${info.penaltyCoin}) `
+          penaltyTag.style.fontSize = '15px'
+          LoserTag.append(penaltyTag)
+          // LoserTag.innerText = `패 (패널티)`
         }
       })
       divTag.appendChild(LoserTag)
@@ -651,7 +619,6 @@ async function joinCard () {
   });
   return new Promise(resolve => {
     const time = setTimeout(() => {
-      // console.log('카드 모으기 애니메이션 완료');
       resolve(); // 생성 완료
     }, 1000)
     setTimeList.value.push(time)
@@ -664,7 +631,6 @@ async function bettingCoin () {
 
 // 코인 이동 (승자에게)
 async function joinCoin(){
-  // console.log("승자에게 코인 이동")
   gameStore.gameMemberInfos.forEach((info, index) => {
     const totalCoinId = document.getElementById('total-coin')
     // 승자 
@@ -675,7 +641,6 @@ async function joinCoin(){
   })
   return new Promise(resolve => {
     const time = setTimeout(() => {
-      // console.log('승자에게 코인 이동 완료');
       resolve() // 생성 완료
     }, 1000)
     setTimeList.value.push(time)
@@ -689,11 +654,6 @@ async function joinCoin(){
     // })
     gameStore.isAnimationRunning = false
   })
-
-  
-  // onMounted(() => {
-  // })
-
 </script>
 
 <style lang="scss" scoped>

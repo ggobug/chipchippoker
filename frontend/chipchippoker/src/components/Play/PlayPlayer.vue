@@ -58,8 +58,6 @@ const props = defineProps({
 // 클래스 부여하기
 const classNameList = ["position-absolute top-0 start-0 d-flex flex-column h-50", "position-absolute top-0 end-0 d-flex flex-column h-50", "position-absolute bottom-0 start-0 d-flex flex-column h-50", "position-absolute bottom-0 end-0 d-flex flex-column h-50"]
 
-console.log('게임방 멤버', gameStore.memberInfos);
-
 roomId.value = props.roomId
 myNickname.value = props.myNickname
 
@@ -84,7 +82,6 @@ const getCardUrl = function (setnum, cardnum) {
 // 카드 뒤집기
 const flip = () => {
   const flipCards = document.querySelectorAll('.flip-card')
-  console.log('카드 뒤집');
   flipCards.forEach(flipCard => {
     flipCard.classList.toggle('flipped')
   });
@@ -144,11 +141,9 @@ onMounted(() => {
     .catch((error) => {
       console.error('카메라 및 마이크 액세스 오류:', error);
     });
-    console.log('여긴 플레이플레이어!!');
     openviduStore.joinSession()
     const backdrop = document.querySelector('.modal-backdrop');
     if (backdrop) {
-        console.log('백드롭 제거');
         backdrop.remove();
     }
   })

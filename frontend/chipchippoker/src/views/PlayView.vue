@@ -134,7 +134,6 @@ roomId.value = roomStore.roomId
 myNickname.value = userStore.myNickname
 roomTitle.value = roomStore.title
 totalParticipantCnt.value = roomStore.totalParticipantCnt
-console.log(roomTitle.value)
 
 const watchersNickname = computed(() => gameStore.watchersNickname)
 
@@ -194,7 +193,6 @@ refreshCount = parseInt(refreshCount) + 1 || 1;
 localStorage.setItem('refreshCount', refreshCount);
 
 // 새로고침 횟수를 출력합니다.
-console.log('새로고침 횟수:', refreshCount);
 
 // 새로고침 횟수가 2회가 넘어가면 새로고침을 했다는 것이므로 out
 if (refreshCount >= 2) {
@@ -260,6 +258,7 @@ onUnmounted(() => {
       roomStore.leaveRoom()
     }
   })
+  
 })
 
 </script>
