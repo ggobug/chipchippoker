@@ -97,9 +97,9 @@ Vue js의 Template 문법이 기존 html 개발 방식과 유사하여 새로운
 
 ### WebRTC란?
 
-![https://github.com/parkjisu6239/2021_Narang/raw/master/README.assets/image-20210828151835934.png](https://github.com/parkjisu6239/2021_Narang/raw/master/README.assets/image-20210828151835934.png)
+![image](https://github.com/SuyeonSun/test/assets/77823761/ab403d20-c0fd-487b-9741-5bcab50b318f)
 
-![https://github.com/parkjisu6239/2021_Narang/raw/master/README.assets/image-20210828152033949.png](https://github.com/parkjisu6239/2021_Narang/raw/master/README.assets/image-20210828152033949.png)
+![image](https://github.com/SuyeonSun/test/assets/77823761/4105452a-bcd4-49ce-a7c5-10d4e191a8d7)
 
 > WebRTC (Web Real-Time Communication)는 웹 브라우저 간에 플러그인의 도움 없이 서로 통신할 수 있도록 설계된 API이다.
 >
@@ -109,7 +109,7 @@ Vue js의 Template 문법이 기존 html 개발 방식과 유사하여 새로운
 
 ### openVidu [🔗](https://openvidu.io/)
 
-![https://github.com/parkjisu6239/2021_Narang/raw/master/README.assets/image-20210828152009951.png](https://github.com/parkjisu6239/2021_Narang/raw/master/README.assets/image-20210828152009951.png)
+![image](https://github.com/SuyeonSun/test/assets/77823761/88418362-25d8-47d2-8d2c-3721f828dcf5)
 
 > OpenVidu is a platform to facilitate the addition of video calls in your web or mobile application. It provides a
 > complete stack of technologies very easy to integrate in your application. Our main goal is to allow developers to add
@@ -131,12 +131,13 @@ Demo Project의 사용 방법은 [openvidu tutorial](https://docs.openvidu.io/en
 
 ### web socket 이란?
 
-![https://github.com/parkjisu6239/2021_Narang/raw/master/README.assets/image-20210828152557863.png](https://github.com/parkjisu6239/2021_Narang/raw/master/README.assets/image-20210828152557863.png)
+![image](https://github.com/SuyeonSun/test/assets/77823761/50c7ca6b-3d5c-4505-9470-15e8018c821c)
 
 > 웹소켓(WebSocket)은 하나의 TCP 접속에 전이중 통신 채널을 제공하는 컴퓨터 통신 프로토콜이다.
 > 웹소켓 프로토콜은 2011년 IETF에 의해 [RFC 6455](https://datatracker.ietf.org/doc/html/rfc6455)로 표준화되었으며 웹 IDL의 웹소켓 API는 W3C에 의해
 > 표준화되고 있다.
-[RFC 7936](https://datatracker.ietf.org/doc/html/rfc7936),[RFC 8307](https://datatracker.ietf.org/doc/html/rfc8307),[RFC 8441](https://datatracker.ietf.org/doc/html/rfc8441)
+[RFC 7936](https://datatracker.ietf.org/doc/html/rfc7936),[RFC 8307](https://datatracker.ietf.org/doc/html/rfc8307)
+> ,[RFC 8441](https://datatracker.ietf.org/doc/html/rfc8441)
 > 로 2018년까지 꾸준히 업데이트되고 있는 기술이다.
 >
 
@@ -170,7 +171,7 @@ Demo Project의 사용 방법은 [openvidu tutorial](https://docs.openvidu.io/en
 > JavaScript face recognition API for the browser and nodejs implemented on top of tensorflow.js core
 >
 
-![https://github.com/parkjisu6239/2021_Narang/raw/master/README.assets/57224752-ad3dc080-700a-11e9-85b9-1357b9f9bca4.gif](https://github.com/parkjisu6239/2021_Narang/raw/master/README.assets/57224752-ad3dc080-700a-11e9-85b9-1357b9f9bca4.gif)
+![image](https://github.com/SuyeonSun/test/assets/77823761/c4806edc-8489-4372-abae-d6d1e1eed0a9)
 
 칩칩포커 에서는`face api`의 다양한 기능 중 위 이미지에 있는 2가지 기능을 사용합니다.`land mark`와`emotion detection`을 사용합니다. 자세한 내용은 하단의 게임 컨텐츠에서 소개합니다.
 
