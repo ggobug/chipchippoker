@@ -178,13 +178,11 @@ Demo Project의 사용 방법은 [openvidu tutorial](https://docs.openvidu.io/en
 
 ## 게임 기본 설명
 
-![image](https://github.com/SuyeonSun/test/assets/77823761/e071de34-8f75-4460-82fa-6c191ba6877a)
-
-![image](https://github.com/SuyeonSun/test/assets/77823761/c1cc3cbc-b48b-47d2-8268-9edff1e099a6)
-![image](https://github.com/SuyeonSun/test/assets/77823761/ac09adf1-3753-411e-8994-c66f99794a61)
-![image](https://github.com/SuyeonSun/test/assets/77823761/5e0e6359-b10e-43a3-92f5-fc74ace35428)
-
-![image](https://github.com/SuyeonSun/test/assets/77823761/dd48c377-87b9-40e3-8a59-f0ae33dcca0e)
+<img src="https://github.com/SuyeonSun/test/assets/77823761/e071de34-8f75-4460-82fa-6c191ba6877a" width="500" height="300">
+<img src="https://github.com/SuyeonSun/test/assets/77823761/c1cc3cbc-b48b-47d2-8268-9edff1e099a6" width="500" height="300">
+<img src="https://github.com/SuyeonSun/test/assets/77823761/ac09adf1-3753-411e-8994-c66f99794a61" width="500" height="300">
+<img src="https://github.com/SuyeonSun/test/assets/77823761/5e0e6359-b10e-43a3-92f5-fc74ace35428" width="500" height="300">
+<img src="https://github.com/SuyeonSun/test/assets/77823761/dd48c377-87b9-40e3-8a59-f0ae33dcca0e" width="500" height="300">
 
 ## 특별 기능
 
@@ -320,9 +318,10 @@ build 후 docker-compose를 실행하도록 했습니다.
 ## Figma
 
 - **WireFrame**
-  ![image](https://github.com/SuyeonSun/test/assets/77823761/8661b086-98c0-4819-8035-c3e1fcbe73c8)
-  ![image](https://github.com/SuyeonSun/test/assets/77823761/d7fd3b42-6d69-4fc8-afe4-f7de92e86c3c)
-  ![image](https://github.com/SuyeonSun/test/assets/77823761/8a82b8b6-6e6a-4ad4-bb47-94cd8bb28d04)
+
+  <img src="https://github.com/SuyeonSun/test/assets/77823761/8661b086-98c0-4819-8035-c3e1fcbe73c8" width="200" height="120">
+  <img src="https://github.com/SuyeonSun/test/assets/77823761/d7fd3b42-6d69-4fc8-afe4-f7de92e86c3c" width="200" height="120">
+  <img src="https://github.com/SuyeonSun/test/assets/77823761/8a82b8b6-6e6a-4ad4-bb47-94cd8bb28d04" width="200" height="120">
 - **프로토 타입**
 
 ## Logic Flow
@@ -339,13 +338,14 @@ build 후 docker-compose를 실행하도록 했습니다.
 ## Assets(Custom)
 
 - **로고**
-  ![로고](https://github.com/yebin113/django_prac/assets/139421100/f6f86b02-a4e7-4512-9029-ea93c2482323)
+
+  <img src="https://github.com/yebin113/django_prac/assets/139421100/f6f86b02-a4e7-4512-9029-ea93c2482323" width="200" height="100">
 
 - **카드**
     - 네 개의 카드 세트 , 1~ 10까지의 카드 숫자
     - 예시
-    -
-  ![카드앞면](https://github.com/yebin113/django_prac/assets/139421100/9609d9b8-1d7b-4030-944f-81f404b71931)
+
+      ![카드앞면](https://github.com/yebin113/django_prac/assets/139421100/9609d9b8-1d7b-4030-944f-81f404b71931)
 
     - 뒷면
 
@@ -355,13 +355,12 @@ build 후 docker-compose를 실행하도록 했습니다.
     - 플레이어에 따라 다른 코인 디자인
     - 예시
 
-      ![코인](https://github.com/yebin113/django_prac/assets/139421100/2c7e34d1-8675-499e-a668-c76af324cd4e)
-
+      <img src="https://github.com/yebin113/django_prac/assets/139421100/2c7e34d1-8675-499e-a668-c76af324cd4e" width="100" height="100">
 - **티어**
     - 레어, 다이아, 플래티넘, 골드, 실버, 브론즈 등의 티어 디자인
-    - 예시
-      ![image](https://github.com/SuyeonSun/test/assets/77823761/6b7fa029-16f0-42b6-9e71-56a7360840d8)
+        - 예시
 
+      <img src="https://github.com/SuyeonSun/test/assets/77823761/6b7fa029-16f0-42b6-9e71-56a7360840d8" width="100" height="100">
 
 - 출처
     - [https://github.com/justadudewhohacks/face-api.js](https://github.com/justadudewhohacks/face-api.js)
