@@ -205,6 +205,17 @@ if (refreshCount >= 2) {
     }
 }
 
+// 방 나가기
+const leaveRoom = function () {
+  // 관전자면
+  if (roomStore.isWatcher === true) {
+    roomStore.isWatcher = false
+    roomStore.leaveWatcher()
+  } else {
+    roomStore.leaveRoom()
+  }
+}
+
 onMounted(() => {
   window.addEventListener("beforeunload", (event) => {
     event.preventDefault()
