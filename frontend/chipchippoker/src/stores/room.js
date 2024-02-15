@@ -16,6 +16,7 @@ export const useRoomStore = defineStore('room', () => {
   const router = useRouter()
 
   const roomType = ref('친선')
+  const gameType = ref('친선전')
   const allRoomList = ref([])
 
   const pageData = ref(
