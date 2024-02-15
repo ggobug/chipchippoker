@@ -335,7 +335,7 @@ public class GameManager {
 			.filter(memberManager -> memberManager.getMemberInfo().getIsReady().equals(Boolean.TRUE))
 			.count();
 
-		return readyCount == memberManagerMap.values().size() - 1;
+		return readyCount >= memberManagerMap.values().size() - 1;
 	}
 
 	public void banMember(String banMemberNickname) {
