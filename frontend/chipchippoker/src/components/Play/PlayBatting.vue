@@ -16,40 +16,9 @@
     style="width: 100px; z-index: 2000; position: absolute;">
     <div class="row position-relative w-100 h-100 d-flex justify-content-center align-items-center">
 
-
-      <!-- 모인 코인 -->
-      <div class="position-absolute d-flex justify-content-center align-items-center">
-        <div class="flex-wrap" style="width: 100px; z-index: 1999;">
-          <div class="justify-content-center text-white text-center fw-bold">
-            <p class="mb-1">총 배팅 코인: {{ totalBettingCoin() }}</p>
-            <div id="total-coin" class="d-flex justify-content-center flex-wrap" style="width: 100px;">
-              <span>
-                <img style="width: 30px;" v-for="index in gameStore?.totalBettingCoin[0]" :key="index"
-                  class="list-overlap-small" :src="getCoinUrl(1)" alt="">
-              </span>
-              <span v-if="gameStore?.gameMemberInfos?.length > 1">
-                <img style="width: 30px;" v-for="index in gameStore?.totalBettingCoin[1]" :key="index"
-                class="list-overlap-small" :src="getCoinUrl(2)" alt="">
-              </span>
-              <span v-if="gameStore?.gameMemberInfos?.length > 2">
-                <img style="width: 30px;" v-for="index in gameStore?.totalBettingCoin[2]" :key="index"
-                class="list-overlap-small" :src="getCoinUrl(3)" alt="">
-              </span>
-              <span v-if="gameStore?.gameMemberInfos?.length > 3">
-                <img style="width: 30px;" v-for="index in gameStore?.totalBettingCoin[3]" :key="index"
-                class="list-overlap-small" :src="getCoinUrl(4)" alt="">
-              </span>
-              <span>
-                <img style="width: 30px;" v-for="index in gameStore?.willBettingCoin" :key="index"
-                  class="list-overlap-small opacity-50" :src="getCoinUrl(getMyIndex())" alt="">
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      
       <!-- 위쪽 -->
-      <div class="row col-12 justify-content-between">
+      <div class="row col-12 justify-content-between position-absolute" style="top: 5%">
         <!-- 1번 플레이어 -->
         <div class="row col-6">
           <!-- 카드 -->
@@ -137,9 +106,55 @@
           </div>
         </div>
       </div>
-      
+
+      <!-- 모인 코인 -->
+      <div class="position-absolute d-flex justify-content-center align-items-center">
+        <div class="flex-wrap" style="width: 130px; z-index: 1999;">
+          <div class="text-white text-center justify-content-center align-items-center fw-bold">
+            <p class="mb-1">총 배팅 코인: {{ totalBettingCoin() }}</p>
+            <div id="total-coin" class="d-flex flex-column justify-content-center align-items-center" style="width: 100%;">
+              <span class="justify-content-center align-items-center">
+                <img style="width: 30px;" v-for="index in gameStore?.totalBettingCoin[0]" :key="index"
+                  class="justify-content-center align-items-center"
+                  :class="{ 'list-overlap-middle': totalBettingCoin() > 30 && totalBettingCoin() <60, 
+                'list-overlap-small': totalBettingCoin() <= 30,
+                'list-overlap-much': totalBettingCoin() >=60 }" :src="getCoinUrl(1)" alt="">
+              </span>
+              <span class="justify-content-center align-items-center" v-if="gameStore?.gameMemberInfos?.length > 1">
+                <img style="width: 30px;" v-for="index in gameStore?.totalBettingCoin[1]" :key="index"
+                class=""
+                :class="{ 'list-overlap-middle': totalBettingCoin() > 30 && totalBettingCoin() <60, 
+                'list-overlap-small': totalBettingCoin() <= 30,
+                'list-overlap-much': totalBettingCoin() >=60 }" :src="getCoinUrl(2)" alt="">
+              </span>
+              <span class="justify-content-center align-items-center" v-if="gameStore?.gameMemberInfos?.length > 2">
+                <img style="width: 30px;" v-for="index in gameStore?.totalBettingCoin[2]" :key="index"
+                class=""
+                :class="{ 'list-overlap-middle': totalBettingCoin() > 30 && totalBettingCoin() <60, 
+                'list-overlap-small': totalBettingCoin() <= 30,
+                'list-overlap-much': totalBettingCoin() >=60 }" :src="getCoinUrl(3)" alt="">
+              </span>
+              <span class="justify-content-center align-items-center" v-if="gameStore?.gameMemberInfos?.length > 3">
+                <img style="width: 30px;" v-for="index in gameStore?.totalBettingCoin[3]" :key="index"
+                class=""
+                :class="{ 'list-overlap-middle': totalBettingCoin() > 30 && totalBettingCoin() <60, 
+                'list-overlap-small': totalBettingCoin() <= 30,
+                'list-overlap-much': totalBettingCoin() >=60 }" :src="getCoinUrl(4)" alt="">
+              </span>
+              <span class="justify-content-center align-items-center">
+                <img style="width: 30px;" v-for="index in gameStore?.willBettingCoin" :key="index"
+                  class="list-overlap-small opacity-50"
+                  :class="{ 'list-overlap-middle': totalBettingCoin() > 30 && totalBettingCoin() <60, 
+                'list-overlap-small': totalBettingCoin() <= 30,
+                'list-overlap-much': totalBettingCoin() >=60 }" :src="getCoinUrl(getMyIndex())" alt="">
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- 아래쪽 -->
-      <div class="row col-12 justify-content-between">
+      <div class="row col-12 justify-content-between position-absolute" style="top: 60%">
 
         <!-- 3번 플레이어 -->
         <div class="row col-6" v-if="gameStore.memberInfos && gameStore.memberInfos.length > 2">
@@ -235,6 +250,7 @@
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -245,11 +261,14 @@ import { useGameStore } from '@/stores/game';
 import { useRoomStore } from '@/stores/room';
 import { useUserStore } from '@/stores/user';
 import { useSoundStore } from '@/stores/sound';
+import { useRoute } from 'vue-router';
 
 const userStore = useUserStore()
 const gameStore = useGameStore()
 const roomStore = useRoomStore()
 const soundStore = useSoundStore()
+
+const route = useRoute()
 
 const gameStart = ref(false)
 const setTimeList = ref([])
@@ -259,7 +278,7 @@ const nextRoundState = computed(() => gameStore.nextRoundState); // 현재 라�
 const bettingEvent = computed(() => gameStore.bettingEvent) // 배팅 이벤트 감지
 const willBettingCoin = computed(() => gameStore.willBettingCoin) // 내려고 하는 배팅 코인 감지
 
-const cardPosition = [["-10%", "20%"], ["-10%", "50%"], ["80%", "20%"], ["80%", "50%"]]
+const cardPosition = [["0%", "20%"], ["0%", "50%"], ["55%", "20%"], ["55%", "50%"]]
 
 // 내 인덱스 구하기
 const getMyIndex = function () {
@@ -379,9 +398,14 @@ async function startGameAnimation () {
 
 // 라운드 변경 이벤트
 watch(() => nextRoundState.value, (newValue, oldValue) => {
-  if ( newValue === 0){
+  if ( newValue === 0 ){
+
   } else{
     if (newValue === true && oldValue === false) {
+      if (route.name !== 'play') {
+        gameStore.nextRoundState = false
+      }
+
       if (gameStore.nextCurrentRound === 1) {
         // 게임 시작
         startGameAnimation()
@@ -396,14 +420,18 @@ watch(() => nextRoundState.value, (newValue, oldValue) => {
       }
     }
     else if (newValue === false && oldValue === true) {
-      // 라운드 종료
-      updateEndData()
-      updateTotalBettingCoin()
-      // setTimeList.value.forEach(time => {
-      //   clearTimeout(time)
-      // })
-      endRoundAnimation()
 
+      if (route.name !== 'play') {
+        gameStore.nextRoundState = false
+      } else {
+        // 라운드 종료
+        updateEndData()
+        updateTotalBettingCoin()
+        // setTimeList.value.forEach(time => {
+        //   clearTimeout(time)
+        // })
+        endRoundAnimation()
+      }
     }
   }
   })
