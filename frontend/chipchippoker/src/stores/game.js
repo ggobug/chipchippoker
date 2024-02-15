@@ -96,7 +96,6 @@ export const useGameStore = defineStore(
     // console.log(stompClient);
     // 웹소켓 연결 성공 이벤트
     stompClient.ws.onopen = function (params) {
-      // console.log('===========================웹소켓 연결 성공 감지==================================')
     };
 
     // 웹소켓 연결 끊김 이벤트
@@ -194,12 +193,13 @@ export const useGameStore = defineStore(
                       }
                     }, 7500);
                   } else {
-                    // 배팅은 1초 미루기
+                    // 배팅은 0.5초 미루기
                     setTimeout(() => {
                       if (subscriptionGame.value !== undefined) {
-                        // console.log('배팅 전',bettingEvent.value);
-                        bettingEvent.value = true;
-                        // console.log('배팅 후', bettingEvent.value);
+                        if (bettingEvent.value === true) {
+                          bettingEvent.value = false
+                        }
+                        bettingEvent.value = true
                         nextRoundState.value = response.data.roundState;
                         nextCurrentRound.value = response.data.currentRound;
                         nextYourTurn.value = response.data.yourTurn;

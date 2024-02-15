@@ -388,11 +388,11 @@ async function startGameAnimation () {
   // 1. 플레이페이지 진입하면 텍스트 애니메이션 (3초 정도)
   gameStart.value = true
 
-  const time = setTimeout(()=>{
+  setTimeout(()=>{
     gameStart.value = false
     startRoundAnimation()
   },5000)
-  setTimeList.value.push(time)
+  // setTimeList.value.push(time)
   await toggleAnimationState()
 }
 
@@ -443,6 +443,9 @@ watch(() =>[ nextYourTurn.value, nextRoundState.value], (newValue, oldValue) => 
 
 // 배팅 이벤트
 watch(() => bettingEvent.value, (newValue, oldValue) => {
+  if (route.name !== 'play') {
+      gameStore.bettingEvent = false
+    }
   if (newValue === true && oldValue === false) {
     updateData()
     gameStore.bettingEvent = false
@@ -481,10 +484,10 @@ async function createCard() {
     cardElement.classList.remove(`fade-out`)
   }
   return new Promise(resolve => {
-    const time = setTimeout(() => {
+    setTimeout(() => {
       resolve() // 생성 완료
     }, 1000)
-    setTimeList.value.push(time)
+    // setTimeList.value.push(time)
   })
 }
 
@@ -497,10 +500,10 @@ async function moveCard() {
   }
   return new Promise(resolve => {
     soundStore.cardshuffleSound()
-    const time = setTimeout(() => {
+    setTimeout(() => {
       resolve(); // 생성 완료
     }, 1000)
-    setTimeList.value.push(time)
+    // setTimeList.value.push(time)
   })
 }
 
@@ -511,36 +514,36 @@ async function fadeOutCard() {
     cardElement.classList.add(`fade-out`)
   }
   return new Promise(resolve => {
-    const time = setTimeout(() => {
+    setTimeout(() => {
       resolve(); // 생성 완료
     }, 2000)
-    setTimeList.value.push(time)
+    // setTimeList.value.push(time)
   })
 }
 
 // 카드 제거
 async function removeCard() {
   return new Promise(resolve => {
-    const time = setTimeout(() => {
+    setTimeout(() => {
       for (let i = 1; i < gameStore.memberInfos.length+1; i++) {
         const cardElement = document.getElementById(`card-deck${i}`)
         cardElement.remove()
       }
       resolve(); // 생성 완료
     }, 1000)
-    setTimeList.value.push(time)
+    // setTimeList.value.push(time)
   })
 }
 async function removeCardEnd() {
   return new Promise(resolve => {
-    const time = setTimeout(() => {
+    setTimeout(() => {
       for (let i = 1; i < gameStore.memberInfos.length+1; i++) {
         const cardElement = document.getElementById(`end-card${i}`)
         cardElement.remove()
       }
       resolve(); // 생성 완료
     }, 1000)
-    setTimeList.value.push(time)
+    // setTimeList.value.push(time)
   })
 }
 
@@ -552,10 +555,10 @@ async function filpMyCard() {
     cardElement.classList.add('flipped')
   
     return new Promise(resolve => {
-      const time = setTimeout(() => {
+      setTimeout(() => {
         resolve(); // 생성 완료
       }, 1000)
-      setTimeList.value.push(time)
+      // setTimeList.value.push(time)
     })
   }
 }
@@ -572,10 +575,10 @@ async function flipCard() {
     cardElement.classList.add('flipped')
   }
   return new Promise(resolve => {
-    const time = setTimeout(() => {
+    setTimeout(() => {
       resolve(); // 생성 완료
     }, 1000)
-    setTimeList.value.push(time)
+    // setTimeList.value.push(time)
   })
 }
 
@@ -586,10 +589,10 @@ async function flipCardBack() {
     cardElement.classList.remove('flipped')
     }
   return new Promise(resolve => {
-    const time = setTimeout(() => {
+    setTimeout(() => {
       resolve(); // 생성 완료
     }, 1000)
-    setTimeList.value.push(time)
+    // setTimeList.value.push(time)
   })
 }
 
@@ -646,10 +649,10 @@ async function joinCard () {
     divTag.appendChild(cardElement);
   });
   return new Promise(resolve => {
-    const time = setTimeout(() => {
+    setTimeout(() => {
       resolve(); // 생성 완료
     }, 1000)
-    setTimeList.value.push(time)
+    // setTimeList.value.push(time)
   });
 }
 
@@ -668,10 +671,10 @@ async function joinCoin(){
     }
   })
   return new Promise(resolve => {
-    const time = setTimeout(() => {
+    setTimeout(() => {
       resolve() // 생성 완료
     }, 1000)
-    setTimeList.value.push(time)
+    // setTimeList.value.push(time)
   })
 }
 
