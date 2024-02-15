@@ -28,9 +28,6 @@
       <PlayBattingVue />
 
     </div>
-
-
-
   </div>
 </template>
 
@@ -137,16 +134,7 @@ const roundState = computed(() => gameStore.roundState);
 //   }
 // })
 
-// 방 나가기
-const leaveRoom = function () {
-  // 관전자면
-  if (roomStore.isWatcher === true) {
-    roomStore.isWatcher = false
-    roomStore.leaveWatcher()
-  } else {
-    roomStore.leaveRoom()
-  }
-}
+
 
 onMounted(() => {
   navigator.mediaDevices.getUserMedia({ video: true, audio: true })
