@@ -29,7 +29,7 @@ export const useSoundStore = defineStore('sound', () => {
     }
     
     // 음향 플레이 함수
-    const alarm = new Audio('src/assets/bgm/alarm.mp3');
+    const alarm = new Audio('/src/assets/bgm/alarm.mp3');
     const alarmSound = function(){
       alarm.volume = effectSoundRange.value/100
       alarm.currentTime = 0;
@@ -37,14 +37,14 @@ export const useSoundStore = defineStore('sound', () => {
     }
 
     // 카드 섞기
-    const cardshuffle = new Audio('src/assets/bgm/cardshuffle.mp3');
+    const cardshuffle = new Audio('/src/assets/bgm/cardshuffle.mp3');
     const cardshuffleSound = function(){
       cardshuffle.currentTime = 0;
       cardshuffle.volume = effectSoundRange.value/100
       cardshuffle.play()
     }
     // 코인 사운드
-    const chipsound = new Audio('src/assets/bgm/chipsound.mp3');
+    const chipsound = new Audio('/src/assets/bgm/chipsound.mp3');
     const chipsoundSound = function(){
       chipsound.currentTime = 0 
       chipsound.volume = effectSoundRange.value/100
@@ -52,7 +52,7 @@ export const useSoundStore = defineStore('sound', () => {
     }
     
     // 패배 사운드
-    const lose = new Audio('src/assets/bgm/lose.mp3');
+    const lose = new Audio('/src/assets/bgm/lose.mp3');
     const loseSound = function(){
       lose.currentTime = 0
       lose.volume = effectSoundRange.value/100
@@ -60,7 +60,7 @@ export const useSoundStore = defineStore('sound', () => {
     }
     
     // 승리 사운드
-    const win = new Audio('src/assets/bgm/win.mp3');
+    const win = new Audio('/src/assets/bgm/win.mp3');
     const winSound = function(){
       win.currentTime = 0;
       win.volume = effectSoundRange.value/100
@@ -68,7 +68,7 @@ export const useSoundStore = defineStore('sound', () => {
     }
     
     // 호버 사운드
-    const hover = new Audio('src/assets/bgm/hover.mp3');
+    const hover = new Audio('/src/assets/bgm/hover.mp3');
     const hoverSound = function(){
       // var hover = new Audio('src/assets/bgm/hover.mp3');
       hover.currentTime = 0;
