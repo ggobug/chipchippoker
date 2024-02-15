@@ -1,7 +1,5 @@
 import { ref, watch } from 'vue'
 import { defineStore } from 'pinia'
-import axios from 'axios'
-import { useRoute, useRouter } from 'vue-router'
 
 export const useSoundStore = defineStore('sound', () => {
     // 설정 음향 사운드
