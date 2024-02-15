@@ -224,12 +224,6 @@ const calculateMinBettingCoin = function(){
 
 // 베팅 Validation ===================================================
 const betValidation = function(){
-  // 애니메이션 중에는 배팅 안됨
-  // if (gameStore.isAnimationRunning)
-  // { 
-  //   alert("현재는 배팅할 수 없습니다.")
-  //   return false
-  // }
   // 0 미만의 코인을 베팅하려고 하거나
   if (bettingCoin.value < 0)
   {
