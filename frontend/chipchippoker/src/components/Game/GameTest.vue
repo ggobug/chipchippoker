@@ -57,7 +57,6 @@
     if (!validateConditions()) {
       return
     }
-    console.log('방 생성 요청');
     // 게임방 생성
     gameStore.subscribeHandler(gameRoomTitle.value)
     gameStore.sendCreateRoom(gameRoomTitle.value, countOfPeople.value)
@@ -88,12 +87,10 @@
 }
 // 준비
 const sendReady = function(){
-  console.log("Ready!!!!!1")
   gameStore.sendReady(gameRoomTitle.value)
 }
 // 시작
 const sendStartGame = function(){
-  console.log("StartGame!!!!!!!!!!!1")
   gameStore.sendStartGame(gameRoomTitle.value)
 }
 

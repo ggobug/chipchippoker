@@ -81,9 +81,7 @@ const isBetting = ref(false)
 
 // 웹소켓 메시지 수신 시 최대 배팅 코인 업데이트
 watch(() => gameStore.gameMemberInfos, () => {
-  console.log('턴 변화 감지')
   getGameInfo()
-  console.log(myGameInfo.value, maxBettingCoin.value, minBettingCoin.value);
   calculateMaxBettingCoin()
   calculateMinBettingCoin()
 })
@@ -125,7 +123,6 @@ const bet = function () {
     gameStore.bet(roomStore.title, "BET", bettingCoin.value)
     bettingCoin.value = 0
     isBetting.value = true
-    console.log('bettingEvent : ', gameStore.bettingEvent);
   }
 }
 
@@ -135,8 +132,6 @@ const call = function () {
   if (betValidation()) {
     gameStore.bet(roomStore.title, "BET", bettingCoin.value)
     bettingCoin.value = 0
-    console.log('bettingEvent : ', gameStore.bettingEvent);
-
   }
 }
 
@@ -146,7 +141,6 @@ const die = function () {
     bettingCoin.value = 0
     isBetting.value = true
     gameStore.bet(roomStore.title, "DIE", bettingCoin.value)
-    console.log('bettingEvent : ', gameStore.bettingEvent);
 
   } else {
     alert("본인 차례가 아닙니다.")
@@ -155,11 +149,8 @@ const die = function () {
 
 // 내려고 하는 배팅 코인 감지
 watch(() => bettingCoin.value, (newValue, oldValue)=>{
-  console.log('낼 배팅 코인 감지');
   gameStore.willBettingCoin = bettingCoin.value
-  console.log(gameStore.willBettingCoin);
 })
-
 
 
 // 타이머 실행함수
@@ -217,7 +208,6 @@ const calculateMinBettingCoin = function(){
       minCoin = info.bettingCoin
     }
   })
-  console.log(minCoin, myGameInfo.value.bettingCoin);
   minBettingCoin.value = minCoin - myGameInfo.value.bettingCoin
 }
 
@@ -239,7 +229,6 @@ const betValidation = function(){
   // 현재 필드에 나와있는 최대 베팅 금액보다 적은 금액을 베팅하려고 할 때 -> 첫 턴일 때 생각해봐야 함
   else if (bettingCoin.value + myGameInfo.value.bettingCoin < minBettingCoin.value)
   {
-    console.log(maxBettingCoin.value);
     alert("현재 최대 베팅 코인보다 적게 베팅할 수 없습니다.")
     return false
   }

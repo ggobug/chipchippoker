@@ -73,11 +73,9 @@
       memberId: memberId.value,
       password: password.value
     }
-    console.log('일반 로그인 요청')
     soundStore.bgmOn()
     userStore.generalLogIn(payload)
     .then(result => {
-      console.log(result);
       if (result) {
         memberId.value = null
         password.value = null
@@ -89,7 +87,6 @@
   
   // 카카오 인가코드 요청
   const simpleLogIn = function () {
-    console.log('카카오 인가코드 요청')
     userStore.getKakaoCode()
   }
 
@@ -99,7 +96,6 @@
 
   // 인가코드 받으면
   if (authorizationCode.value) {
-    console.log(authorizationCode.value);
     userStore.simpleLogInRequest(authorizationCode.value)
     .then(result => {
       if (result) {

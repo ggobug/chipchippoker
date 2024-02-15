@@ -110,19 +110,14 @@ const changeType = function(type){
 const isSearching = computed(() => matchStore.isSearching)
 watch(() => isSearching.value, (newVal, oldVal) => {
     const findGameModal = new bootstrap.Modal(document.getElementById('FindGameModal'))
-    console.log(matchStore.isSearching)
-    console.log(newVal);
     if (!newVal) {
-        console.log('모달 닫기');
         findGameModal.hide()
     } else {
-        console.log('모달 열기');
         findGameModal.show()
     }
 })
 
 const closeModalHandler = function () {
-    console.log('닫기 이벤트 발생!!');
     const findGameModal = new bootstrap.Modal(document.getElementById('FindGameModal'))
     findGameModal.hide()
 }
@@ -130,27 +125,23 @@ const closeModalHandler = function () {
 // ================================================================
 // -------------------모달 테스트-------------------
 const handleShowFindGame = function (payload) {
-    console.log('빠른 모드 탐색 시작');
     if (gameType.value === '경쟁전') {
         const modalInstance = new bootstrap.Modal(document.getElementById('FindGameModal'))
         matchStore.matchCompete(payload)
         .then(code => {
             if (code === '성공') {
                 // modalInstance.show()
-                console.log(matchStore.title, matchStore.totalParticipantCnt);
                 gameStore.sendMatching(matchStore.title, matchStore.totalParticipantCnt)
             }
         })
     } else {
         matchStore.matchFriend(payload)
         .then(result => {
-            console.log('친선전 매칭 결과', result);
             
             if (result === false) {
                 const notExistRoomModal = new bootstrap.Modal(document.getElementById('NotExistRoom'));
                 notExistRoomModal.show();
             } else if (result === 'FB010') {
-                console.log('이미 방 입장 중')
             }
         })
     }
@@ -160,7 +151,6 @@ const handleShowFindGame = function (payload) {
 
 // 방을 생성할 때 때 이미 있는 방제면
 watch(() => roomStore.isRoom, (newValue) => {
-    console.log(roomStore.isRoom)
     if (newValue) {
         // const IsExistRoomModal = new bootstrap.Modal(document.getElementById('IsExistRoomModal'));
         // IsExistRoomModal.show()
@@ -179,10 +169,8 @@ onBeforeRouteLeave((to, from, next) => {
     const modalInstance = new bootstrap.Modal(document.getElementById('FindGameModal'))
     modalInstance.hide()
     // 모달 백드랍 제거
-    console.log('메인페이지 떠나기 전에~~~~');
     const backdrop = document.querySelector('.modal-backdrop');
     if (backdrop) {
-        console.log('백드롭 제거');
         backdrop.remove();
     }
     next(); // 다음 라우터로 이동
@@ -191,7 +179,6 @@ onBeforeRouteLeave((to, from, next) => {
 onMounted(()=>{
   gameStore.connectHandler()
   friendStore.getAllRankList()
-  // friendStore.getMyRankList()
   // soundStore.bgmOn()
 
   if (roomStore.roomId !== '') {
