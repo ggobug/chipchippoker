@@ -174,14 +174,12 @@ onBeforeRouteUpdate(async (to, from) => {
 
 // 친구 요청
 const friendRequest = function(){
-  console.log('친구신청 걸었음!!!')
   isSent.value = true
   friendStore.friendRequest(userStore?.profileInfo?.nickname)
 }
 
 // 카카오 연동하기
 const kakaoConnect = function() {
-  console.log('인가코드 받기');
   userStore.getKakaoCodeToSink()
 }
 const authorizationCode = ref(null)
@@ -191,12 +189,10 @@ userStore.authorizationCode = authorizationCode.value
 
 // 인가코드 받으면
 if (authorizationCode.value && !userStore.isKakaoConnect){
-  console.log('카카오 연동 요청');
   userStore.kakaoConnect(authorizationCode.value)
   .then(result => {
     if (result) {
       authorizationCode.value = null
-      console.log('카카오 연동 성공');
       userStore.isKakaoConnect = true
       alert("카카오 연동 성공하였습니다.")
       router.push({name:'profile'})

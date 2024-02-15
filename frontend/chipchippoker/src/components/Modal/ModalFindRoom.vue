@@ -73,55 +73,6 @@ const showFindGameModal = function () {
   };
   emit('showFindGame', payload); // 이벤트 발생
 };
-
-// const findGameModal = ref(null);
-// const notExistRoom = ref(null);
-
-
-// const initModals = () => {
-//   findGameModal.value = new bootstrap.Modal(document.getElementById('FindGame'));
-//   notExistRoom.value = new bootstrap.Modal(document.getElementById('NotExistRoom'));
-// };
-
-// onMounted(() => {
-//   // initModals();
-//   findGameModal.value = new bootstrap.Modal(document.getElementById('FindGame'));
-//   notExistRoom.value = new bootstrap.Modal(document.getElementById('NotExistRoom'));
-//   console.log(findGameModal.value);
-//   console.log(notExistRoom.value);
-// });
-
-
-// watch(matchStore.isSearching, (newVal, oldVal) => {
-//   if (newVal === true) {
-//     console.log('게임 찾기');
-//     findGameModal.value.show()
-//   } else {
-//     console.log('게임 찾기 끝');
-//     findGameModal.value.hide()
-//   }
-// })
-
-// watch(matchStore.isNotExistRoom, (newVal, oldVal) => {
-//   if (newVal === true) {
-//     console.log('방이 없다');
-//     notExistRoom.value.show()
-//   } else {
-//     console.log('방 있다');
-//     notExistRoom.hide()
-//   }
-// })
-
-// const showFindGameModal = function () {
-//   const payload = {
-//     totalParticipantCnt: checkedOptions.value
-//   }
-//   if (props.type === '경쟁전') {
-//     matchStore.matchCompete(payload)
-//   } else {
-//     matchStore.matchFriend(payload)
-//   }
-// }
 </script>
 
 <style lang="scss" scoped></style>
