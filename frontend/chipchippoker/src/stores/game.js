@@ -191,7 +191,8 @@ export const useGameStore = defineStore(
                         nextYourTurn.value = response.data.yourTurn;
                         nextGameMemberInfos.value = response.data.gameMemberInfos;
                       }
-                    }, 8500);
+                    }, 9500);
+
                   } else {
                     // 배팅은 0.5초 미루기
                     setTimeout(() => {
@@ -634,15 +635,14 @@ export const useGameStore = defineStore(
                     nextYourTurn.value = response.data.yourTurn;
                     nextGameMemberInfos.value = response.data.gameMemberInfos;
                   }
-                }, 8500);
+                }, 9500);
               } else {
                 // 배팅은 1초 미루기
                 setTimeout(() => {
                   if (subscriptionSpectation.value !== undefined) {
-                    if (bettingEvent.value === true) {
-                      bettingEvent.value = false
-                    }
+                    // console.log('배팅 전',bettingEvent.value);
                     bettingEvent.value = true;
+                    // console.log('배팅 후', bettingEvent.value);
                     nextRoundState.value = response.data.roundState;
                     nextCurrentRound.value = response.data.currentRound;
                     nextYourTurn.value = response.data.yourTurn;

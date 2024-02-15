@@ -68,12 +68,12 @@
   })
 
   // 일반 로그인
-  const generalLogIn = function () {
+  const generalLogIn = async function () {
     const payload = {
       memberId: memberId.value,
       password: password.value
     }
-    soundStore.bgmOn()
+    await soundStore.bgmOn()
     userStore.generalLogIn(payload)
     .then(result => {
       if (result) {
