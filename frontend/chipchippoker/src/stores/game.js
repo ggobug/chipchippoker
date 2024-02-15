@@ -197,9 +197,9 @@ export const useGameStore = defineStore(
                     // 배팅은 1초 미루기
                     setTimeout(() => {
                       if (subscriptionGame.value !== undefined) {
-                        console.log('배팅 전',bettingEvent.value);
+                        // console.log('배팅 전',bettingEvent.value);
                         bettingEvent.value = true;
-                        console.log('배팅 후', bettingEvent.value);
+                        // console.log('배팅 후', bettingEvent.value);
                         nextRoundState.value = response.data.roundState;
                         nextCurrentRound.value = response.data.currentRound;
                         nextYourTurn.value = response.data.yourTurn;

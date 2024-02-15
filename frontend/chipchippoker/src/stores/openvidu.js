@@ -43,10 +43,8 @@ export const useOpenviduStore = defineStore('openvidu', () => {
     }
 
     OV.value = new OpenVidu()
-    console.log(OV);
     session.value = OV.value.initSession()
-    console.log(session);
-
+    console.log(OV.value);
     session.value.on("streamCreated", ( {stream} )=> {
       // 이미 해당 스트림에 대한 구독이 이루어진 경우, 무시
       if (subscribers.value.some(sub => sub.stream === stream)) {
