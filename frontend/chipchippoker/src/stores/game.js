@@ -202,7 +202,7 @@ export const useGameStore = defineStore(
                         nextGameMemberInfos.value = response.data.gameMemberInfos;
                         // console.log('라운드 저장 8초 미룸');
                       }
-                    }, 10000);
+                    }, 7500);
                   } else {
                     // 배팅은 1초 미루기
                     setTimeout(() => {
@@ -451,6 +451,9 @@ export const useGameStore = defineStore(
     const receiveStartGame = function (body) {
       // console.log('receiveStartGame', body)
       // 새로고침 횟수를 삭제합니다.
+      console.log(stompClient.ws)
+      console.log('개인메시지함 구독',subscriptionPrivate);
+      console.log('게임방 구독',subscriptionGame);
       localStorage.removeItem("refreshCount");
 
       router.push({

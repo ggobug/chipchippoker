@@ -639,7 +639,11 @@ async function joinCard () {
       // 패널티 부여
       gameStore?.penaltyInfos?.forEach(info => {
         if (info.nickname === data.nickname) {
-          LoserTag.innerText = `패 (패널티:-${info.penaltyCoin})`
+          const penaltyTag = document.createElement('span')
+          penaltyTag.innerText = `(패널티: -${info.penaltyCoin}) `
+          penaltyTag.style.fontSize = '15px'
+          LoserTag.append(penaltyTag)
+          // LoserTag.innerText = `패 (패널티)`
         }
       })
       divTag.appendChild(LoserTag)

@@ -191,7 +191,6 @@ onBeforeRouteLeave((to, from, next) => {
 onMounted(()=>{
   gameStore.connectHandler()
   friendStore.getAllRankList()
-  // friendStore.getMyRankList()
   // soundStore.bgmOn()
 
   if (roomStore.roomId !== '') {
