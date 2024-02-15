@@ -75,7 +75,9 @@ for (let i = 0; i < 100; i++) {
 
   // 마우스 커서 커스터마이징
  
-
+  const soundCallback = async function () {
+    await soundStore.hoverSound()
+  }
 
   onMounted(() => {
    
@@ -84,7 +86,7 @@ for (let i = 0; i < 100; i++) {
 </script>
 
 <template>
-  <div class="maple bg-gradation-blue" @click="soundStore.hoverSound">
+  <div class="maple bg-gradation-blue" @click="soundCallback()">
     <!-- <div>
       <RouterLink to="/login">로그인</RouterLink> /
       <RouterLink to="/signup">회원가입</RouterLink> / 
