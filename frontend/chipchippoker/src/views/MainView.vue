@@ -189,10 +189,18 @@ onBeforeRouteLeave((to, from, next) => {
 })
 
 onMounted(()=>{
-    gameStore.connectHandler()
-    friendStore.getAllRankList()
-    // friendStore.getMyRankList()
-    // soundStore.bgmOn()
+  gameStore.connectHandler()
+  friendStore.getAllRankList()
+  // friendStore.getMyRankList()
+  // soundStore.bgmOn()
+
+  if (roomStore.roomId !== '') {
+    if (roomStore.isWatcher === true) {
+        roomStore.leaveWatcher()
+      } else {
+          roomStore.leaveRoom()
+      }
+  }
 })
 
 </script>
