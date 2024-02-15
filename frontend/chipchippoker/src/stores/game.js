@@ -90,6 +90,10 @@ export const useGameStore = defineStore(
     // 친구신청 알림
     const isAlarmArrive = ref(false);
 
+    // 웹소켓 디버그 제거
+    // stompClient.debug = null
+    stompClient.hasDebug = false
+    // console.log(stompClient);
     // 웹소켓 연결 성공 이벤트
     stompClient.ws.onopen = function (params) {
       // console.log('===========================웹소켓 연결 성공 감지==================================')

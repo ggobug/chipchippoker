@@ -60,7 +60,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted, computed } from 'vue';
+import { ref, watch } from 'vue';
 import { useGameStore } from '@/stores/game';
 import { useRoomStore } from '@/stores/room';
 import { useUserStore } from '@/stores/user';
@@ -75,6 +75,7 @@ const minBettingCoin = ref(0)
 
 // 타이머
 const timer = ref(20)
+const reduceTime = ref()
 
 // 배팅을 했는지 안했는지
 const isBetting = ref(false)
@@ -156,7 +157,7 @@ watch(() => bettingCoin.value, (newValue, oldValue)=>{
 // 타이머 실행함수
 // const timerSetting = function(){
 //       // 1초마다 한번씩 호출되는 함수
-//   const reduceTime = setInterval(()=>{
+//   reduceTime.value = setInterval(()=>{
 //       // 만약 timer의 시간이 있다면 1초씩 감소
 //     if (timer.value > 0){
 //       timer.value -= 1
@@ -167,14 +168,15 @@ watch(() => bettingCoin.value, (newValue, oldValue)=>{
 //       // 타이머가 0초이고 나의 턴이 아닐때는 멈추기
 //     } else{
 //       console.log("멈추기")
-//       clearInterval(reduceTime)
+//       clearInterval(reduceTime.value)
 //     }
 //   },1000)
 // }
+
 // watch(()=>gameStore.yourTurn,()=>{
 //   timer.value = 20
 //   isBetting.value = false
-//   timerSetting()
+//   // timerSetting()
 // })
 
 gameStore.bettingCoin = bettingCoin.value

@@ -43,6 +43,7 @@ export const useOpenviduStore = defineStore('openvidu', () => {
     }
 
     OV.value = new OpenVidu()
+    console.log(OV);
     session.value = OV.value.initSession()
 
     session.value.on("streamCreated", ( {stream} )=> {
