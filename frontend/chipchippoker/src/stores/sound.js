@@ -15,7 +15,7 @@ export const useSoundStore = defineStore('sound', () => {
     bgm.volume = bgmSoundRange.value/100
     })
 
-    const bgmOn = function(){
+    const bgmOn = async function(){
       // bgm.pause()
       isBgmPlay.value = true
       bgm.play()
@@ -28,7 +28,7 @@ export const useSoundStore = defineStore('sound', () => {
     
     // 음향 플레이 함수
     const alarm = new Audio('/src/assets/bgm/alarm.mp3');
-    const alarmSound = function(){
+    const alarmSound = async function(){
       alarm.volume = effectSoundRange.value/100
       alarm.currentTime = 0;
       alarm.play()
@@ -36,14 +36,14 @@ export const useSoundStore = defineStore('sound', () => {
 
     // 카드 섞기
     const cardshuffle = new Audio('/src/assets/bgm/cardshuffle.mp3');
-    const cardshuffleSound = function(){
+    const cardshuffleSound = async function(){
       cardshuffle.currentTime = 0;
       cardshuffle.volume = effectSoundRange.value/100
       cardshuffle.play()
     }
     // 코인 사운드
     const chipsound = new Audio('/src/assets/bgm/chipsound.mp3');
-    const chipsoundSound = function(){
+    const chipsoundSound = async function(){
       chipsound.currentTime = 0 
       chipsound.volume = effectSoundRange.value/100
       chipsound.play()
@@ -51,7 +51,7 @@ export const useSoundStore = defineStore('sound', () => {
     
     // 패배 사운드
     const lose = new Audio('/src/assets/bgm/lose.mp3');
-    const loseSound = function(){
+    const loseSound = async function(){
       lose.currentTime = 0
       lose.volume = effectSoundRange.value/100
       lose.play()
@@ -59,7 +59,7 @@ export const useSoundStore = defineStore('sound', () => {
     
     // 승리 사운드
     const win = new Audio('/src/assets/bgm/win.mp3');
-    const winSound = function(){
+    const winSound = async function(){
       win.currentTime = 0;
       win.volume = effectSoundRange.value/100
       win.play()
@@ -67,7 +67,7 @@ export const useSoundStore = defineStore('sound', () => {
     
     // 호버 사운드
     const hover = new Audio('/src/assets/bgm/hover.mp3');
-    const hoverSound = function(){
+    const hoverSound = async function(){
       // var hover = new Audio('src/assets/bgm/hover.mp3');
       hover.currentTime = 0;
       hover.volume = effectSoundRange.value/100
