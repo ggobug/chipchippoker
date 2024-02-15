@@ -23,7 +23,7 @@ const props = defineProps({
 
 const videoEl = ref(null);
 
-const videoStyle = ref({ width: "400px", height: "300px" });
+const videoStyle = ref({ width: "350px", height: "270px" });
 const emit = defineEmits(['sendEmotion'])
 
 if (route.name === 'play') {

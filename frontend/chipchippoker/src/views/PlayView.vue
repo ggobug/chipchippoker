@@ -42,7 +42,9 @@
             <h3 class="m-3 mb-0">{{ playerResult.nickname }}님 <span
                 :class="[{ 'text-primary': playerResult.isResult == '승' }, { 'text-danger': playerResult.isResult == '패' }]">{{
                   playerResult.isResult }}</span></h3>
-            <p v-if="gameStore.kindGame==='경쟁'">pointChange: {{ playerResult.pointChange }}</p>
+            <p v-if="gameStore.kindGame==='경쟁전'"
+            :class="[{ 'text-primary': playerResult.isResult == '승' }, { 'text-danger': playerResult.isResult == '패' }]"
+            >pointChange: {{ playerResult.pointChange }}</p>
           </div>
           <!-- 매치 종료 후 메인페이지로 이동 -->
             <button type="button" class="btn-2 btn-2-yellow my-3 justify-content-center align-items-center" style="width: 70px; height: 30px; font-size: 15px;" @click="gotoMain()">나가기</button>
@@ -258,7 +260,7 @@ onUnmounted(() => {
       roomStore.leaveRoom()
     }
   })
-  
+
 })
 
 </script>

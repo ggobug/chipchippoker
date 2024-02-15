@@ -21,11 +21,11 @@
         <!-- 모든 캠 -->
         <div v-if="roomStore.isWatcher===false" id="video-container">
           <div class="flex-container row g-1 p-0">
-            <div class="col-6 mb-5 text-center"
+            <div class="col-6 mb-3 text-center align-self-center justify-content-center"
               v-for="(player, index) in gameStore.memberInfos" :key="index">
-              <div class="text-white align-self-center ">{{ player.nickname }}</div>
+              <div class="text-white align-self-center justify-content-center">{{ player.nickname }}</div>
               <div 
-                style="width: 400px; height: 300px;">
+                style="width: 350px; height: 270px;">
                 <UserVideo 
                 :stream-manager="findVideo(playersComputed, player.nickname)" 
                 :is-manager="isManager"
