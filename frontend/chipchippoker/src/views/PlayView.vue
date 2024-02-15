@@ -69,9 +69,39 @@
         <PlayTalkVue v-else />
         <!-- <PlayTalkVue /> -->
       </div>
+
       <!-- 이모지 or 로로 -->
       <div class="h-100 w-25 d-flex justify-content-center align-items-center">
         <!-- <PlayEmotionVue/> -->
+        <!-- 나가기 -->
+        <div class="">
+          <button
+            class="btn-2 btn-2-red"
+            data-bs-toggle="modal" data-bs-target="#roomOutModal">나가기</button>
+        </div>
+  
+        <div data-bs-backdrop="static" class="modal fade" id="roomOutModal" tabindex="-1" aria-labelledby="IconModalLabel"
+          aria-hidden="true">
+          <!-- 나가기 모달 -->
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background-color: #ffde76;">
+              <div class="modal-header border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="text-center fw-bold fs-3 bg-modal-yellow">
+                  정말 나가시겠습니까?
+                </div>
+                <div class="d-flex justify-content-evenly mt-4">
+                  <button class="btn-2 btn-3-blue " data-bs-dismiss="modal"
+                    >게임하기</button>
+                  <button class="btn-2 btn-3-red" data-bs-dismiss="modal"
+                    @click="leaveRoom()">나가기</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
