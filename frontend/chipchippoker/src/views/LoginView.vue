@@ -73,7 +73,7 @@
       memberId: memberId.value,
       password: password.value
     }
-    await soundStore.bgmOn()
+    await soundStore.mainBgmOn()
     userStore.generalLogIn(payload)
     .then(result => {
       if (result) {

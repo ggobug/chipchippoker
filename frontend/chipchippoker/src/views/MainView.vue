@@ -31,7 +31,7 @@
 
         <div  data-bs-backdrop="false" class="offcanvas offcanvas-end" tabindex="-1" id="friendList" aria-labelledby="friendListLabel">
             <div class="offcanvas-header bg-modal">
-                <button @click="soundStore.hoverSound"  type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                <button @click="soundStore.hoverSound()"  type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body bg-modal">
                 <MainFriendList/>
@@ -180,7 +180,6 @@ onBeforeRouteLeave((to, from, next) => {
 onMounted(()=>{
   gameStore.connectHandler()
   friendStore.getAllRankList()
-  // soundStore.bgmOn()
 
   if (roomStore.roomId !== '') {
     if (roomStore.isWatcher === true) {
