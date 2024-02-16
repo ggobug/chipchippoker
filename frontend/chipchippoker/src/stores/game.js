@@ -474,14 +474,15 @@ export const useGameStore = defineStore(
     // 경쟁 게임 종료
     const receiveGameFinishRank = function (data) {
       setTimeout(() => {
+        soundStore.gameBgmOff()
         if (subscriptionGame.value !== undefined || subscriptionSpectation.value!==undefined) {
         memberEndGameInfos.value = data.memberEndGameInfos;
         memberEndGameInfos.value.forEach((info) => {
           if (info.nickname === userStore.myNickname) {
             if (info.isResult === "승") {
-              soundStore.winSound();
+              soundStore.winGameSound();
             } else if (info.isResult === "패") {
-              soundStore.loseSound();
+              soundStore.loseGameSound();
             }
           }
         });}
@@ -491,14 +492,15 @@ export const useGameStore = defineStore(
     // 친선 게임 종료
     const receiveGameFinishFriend = function (data) {
       setTimeout(() => {
+        soundStore.gameBgmOff()
         if (subscriptionGame.value !== undefined || subscriptionSpectation.value!==undefined) {
         memberEndGameInfos.value = data.memberEndGameInfos;
         memberEndGameInfos.value.forEach((info) => {
           if (info.nickname === userStore.myNickname) {
             if (info.isResult === "승") {
-              soundStore.winSound();
+              soundStore.winGameSound();
             } else if (info.isResult === "패") {
-              soundStore.loseSound();
+              soundStore.loseGameSound();
             }
           }
         });}

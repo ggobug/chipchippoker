@@ -339,23 +339,6 @@ async function updateEndData () {
   gameStore.penaltyInfos = gameStore.nextPenaltyInfos
 }
 
-// 비디오 요소에 스타일을 적용합니다.
-// const videoElement = document.createElement('video')
-// videoElement.src = "/src/assets/icons/chipchippoker.mp4"
-// videoElement.autoplay = true
-// videoElement.style.zIndex = "2000"
-// videoElement.style.position = "fixed"
-// videoElement.style.width = "100vw"
-// videoElement.style.height = "100vh"
-// const container = document.querySelector('.container')
-// container.appendChild(videoElement)
-
-// videoElement.addEventListener('ended', () => {
-//   gameStart.value = false
-//   videoElement.remove()
-//   startRoundAnimation()
-// })
-
 // 애니메이션 진행 상태 토글
 async function toggleAnimationState () {
   gameStore.isAnimationRunning = !gameStore.isAnimationRunning
@@ -363,7 +346,7 @@ async function toggleAnimationState () {
 
 // 라운드 시작 콜백함수
 async function startRoundAnimation () {
-    // -1. 애니메이션 상태 토글
+    // -2. 애니메이션 상태 토글
     await toggleAnimationState()
     // 0. 코인 보여주기
     await gameStore.gameMemberInfos.forEach((info, index) => {
@@ -383,8 +366,11 @@ async function startRoundAnimation () {
 
 // 게임 시작 애니메이션
 async function startGameAnimation () {
+  await soundStore.mainBgmOff()
+  await soundStore.gameBgmOn()
   // 0. 애니메이션 상태 토글
   await toggleAnimationState()
+  await soundStore.gameStartSound()
   // 1. 플레이페이지 진입하면 텍스트 애니메이션 (3초 정도)
   gameStart.value = true
 
@@ -449,8 +435,8 @@ watch(() => bettingEvent.value, (newValue, oldValue) => {
   if (newValue === true && oldValue === false) {
     updateData()
     gameStore.bettingEvent = false
-    // 코인 배팅 (코인 움직이기)
-    // bettingCoin()
+    soundStore.chipsoundSound()
+    soundStore.turnChangeSound()
   }
 })
 
@@ -550,6 +536,7 @@ async function removeCardEnd() {
 // 내 카드 뒤집기
 async function filpMyCard() {
   if (!roomStore.isWatcher) {
+    soundStore.cardFlipSound()
     const myIndex = getMyIndex()
     const cardElement = document.getElementById(`flip-card${myIndex}`)
     cardElement.classList.add('flipped')
@@ -595,6 +582,16 @@ async function flipCardBack() {
     // setTimeList.value.push(time)
   })
 }
+
+// 라운드 종료 사운드 실행
+function endRoundSound () {
+  if (gameStore.winnerNickname === userStore.myNickname || roomStore.isWatcher) {
+    soundStore.winRoundSound()
+  } else {
+    soundStore.loseRoundSound()
+  }
+}
+
 
 // 카드 모으기 (라운드 승패 판단)
 async function joinCard () {
@@ -648,6 +645,8 @@ async function joinCard () {
     container.appendChild(divTag);
     divTag.appendChild(cardElement);
   });
+  endRoundSound()
+
   return new Promise(resolve => {
     setTimeout(() => {
       resolve(); // 생성 완료
@@ -662,6 +661,7 @@ async function bettingCoin () {
 
 // 코인 이동 (승자에게)
 async function joinCoin(){
+  soundStore.chipsoundSound()
   gameStore.gameMemberInfos.forEach((info, index) => {
     const totalCoinId = document.getElementById('total-coin')
     // 승자 
@@ -684,6 +684,7 @@ async function joinCoin(){
     //   clearTimeout(time)
     // })
     gameStore.isAnimationRunning = false
+    soundStore.mainBgmOn()
   })
 </script>
 
