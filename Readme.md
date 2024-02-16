@@ -272,7 +272,3 @@
         - 예시
 
       <img src="https://github.com/SuyeonSun/test/assets/77823761/6b7fa029-16f0-42b6-9e71-56a7360840d8" width="100" height="100">
-
-- 출처
-    - [https://github.com/justadudewhohacks/face-api.js](https://github.com/justadudewhohacks/face-api.js)
-    - [https://docs.openvidu.io/en/2.29.0/](https://docs.openvidu.io/en/2.29.0/)
