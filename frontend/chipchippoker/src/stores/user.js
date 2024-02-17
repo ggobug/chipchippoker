@@ -27,19 +27,24 @@ export const useUserStore = defineStore('user', () => {
   Kakao.init(KAKAO_JAVASCRIPT_KEY)
 
   // 토큰 재발행 요청
-  const renewToken = function () {
-    axios({
-      method: 'post',
-      headers: {
-        'access-token': accessToken.value,
-        'refresh-token': accessToken.value
-      }
-    })
-    .then(res => {
+  const renewToken = async function () {
+    try {
+      const response = await axios({
+        method: 'post',
+        headers: {
+          'access-token': accessToken.value,
+          'refresh-token': accessToken.value
+        }
+      })
       accessToken.value = res.data.accessToken
       refreshToken.value =res.data.refreshToken
-    })
-    .catch(err => console.log(err))
+      return response
+    } catch {
+      accessToken.value = null
+      refreshToken.value = null
+      alert("유효하지 않은 토큰입니다.")
+      throw error;
+    }
   }
 
   // 토큰 재발행 관련 인터셉터
@@ -360,6 +365,7 @@ export const useUserStore = defineStore('user', () => {
     BASE_API_URL,
 
     // 로그인, 로그아웃, 회원가입, 회원탈퇴, 카카오 연동
+    renewToken,
     generalLogIn, getKakaoCode, simpleLogInRequest, kakaoSignUp,
     logOut, signUp, signOut, checkMemberId, checkNickname, validateId, validatePassword, validateNickname, kakaoConnect, getKakaoCodeToSink,
     accessToken, refreshToken, authorizationCode, kakaoAccessToken, isKakaoConnect,

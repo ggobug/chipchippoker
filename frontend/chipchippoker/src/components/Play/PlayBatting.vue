@@ -301,7 +301,7 @@ const totalBettingCoin = function(){
 }
 
 // 배팅코인 초기화
-const updateTotalBettingCoin = function(){
+async function updateTotalBettingCoin (){
   gameStore?.nextGameMemberInfos?.forEach((info,index) =>{
     gameStore.totalBettingCoin[index] = info.bettingCoin
   })
@@ -317,7 +317,7 @@ const getCardUrl = function (setnum, cardnum) {
   return new URL(`/src/assets/cards/set${setnum}/card${cardnum}.svg`, import.meta.url).href;
 };
 
-// 데이터 저장하기
+// 데이터 업데이트
 async function updateData () {
   gameStore.roundState = gameStore.nextRoundState
   gameStore.yourTurn = gameStore.nextYourTurn
@@ -326,7 +326,7 @@ async function updateData () {
   gameStore.penaltyInfos = gameStore.nextPenaltyInfos
 }
 
-// 배팅코인과 카드데이터만 받아옴
+// 배팅코인과 카드데이터만 업데이트
 async function updateEndData () {
   gameStore.roundState = gameStore.nextRoundState
   gameStore.currentRound = gameStore.nextCurrentRound
@@ -337,6 +337,11 @@ async function updateEndData () {
     gameStore.gameMemberInfos[index].cardInfo = info.cardInfo
   })
   gameStore.penaltyInfos = gameStore.nextPenaltyInfos
+  // return new Promise(resolve => {
+  //     setTimeout(() => {
+  //       resolve();
+  //     }, 100)
+  //   })
 }
 
 // 애니메이션 진행 상태 토글
@@ -346,10 +351,8 @@ async function toggleAnimationState () {
 
 // 라운드 시작 콜백함수
 async function startRoundAnimation () {
-    // -2. 애니메이션 상태 토글
-    await toggleAnimationState()
     // 0. 코인 보여주기
-    await gameStore.gameMemberInfos.forEach((info, index) => {
+    gameStore.gameMemberInfos.forEach((info, index) => {
         const totalCoinId = document.getElementById('total-coin')
         totalCoinId.classList.remove(`coin-devide-move${index+1}`)
         totalCoinId.classList.remove('fade-out')
@@ -361,15 +364,15 @@ async function startRoundAnimation () {
     await createCard()
     await moveCard()
     await flipCard()
-    await toggleAnimationState()
+    gameStore.stopTimer()
+    gameStore.resetTimer()
+    gameStore.startTimer()
 }
 
 // 게임 시작 애니메이션
 async function startGameAnimation () {
   await soundStore.mainBgmOff()
   await soundStore.gameBgmOn()
-  // 0. 애니메이션 상태 토글
-  await toggleAnimationState()
   await soundStore.gameStartSound()
   // 1. 플레이페이지 진입하면 텍스트 애니메이션 (3초 정도)
   gameStart.value = true
@@ -378,8 +381,7 @@ async function startGameAnimation () {
     gameStart.value = false
     startRoundAnimation()
   },5000)
-  // setTimeList.value.push(time)
-  await toggleAnimationState()
+  await updateData()
 }
 
 // 라운드 변경 이벤트
@@ -402,7 +404,6 @@ watch(() => nextRoundState.value, (newValue, oldValue) => {
         startRoundAnimation()
         updateData()
         updateTotalBettingCoin()
-
       }
     }
     else if (newValue === false && oldValue === true) {
@@ -413,28 +414,20 @@ watch(() => nextRoundState.value, (newValue, oldValue) => {
         // 라운드 종료
         updateEndData()
         updateTotalBettingCoin()
-        // setTimeList.value.forEach(time => {
-        //   clearTimeout(time)
-        // })
         endRoundAnimation()
       }
     }
   }
   })
 
-// 턴 변경 이벤트
-watch(() =>[ nextYourTurn.value, nextRoundState.value], (newValue, oldValue) => {
-  // updateData()
-})
-
 // 배팅 이벤트
 watch(() => bettingEvent.value, (newValue, oldValue) => {
   if (route.name !== 'play') {
-      gameStore.bettingEvent = false
+      gameStore.bettingEvent = 0
     }
-  if (newValue === true && oldValue === false) {
+  if (newValue > oldValue ) {
     updateData()
-    gameStore.bettingEvent = false
+    
     soundStore.chipsoundSound()
     soundStore.turnChangeSound()
   }
@@ -442,8 +435,8 @@ watch(() => bettingEvent.value, (newValue, oldValue) => {
 
 // 라운드 종료 콜백함수
 async function endRoundAnimation () {
-  // 0. 애니메이션 상태 토글
-  await toggleAnimationState()
+  // 0. 카드랑 코인 데이터만 업데이트
+  await updateEndData()
   // 1. 내 카드 뒤집기
   await filpMyCard()
   // 2. 모든 카드 뒤로 뒤집기
@@ -458,8 +451,7 @@ async function endRoundAnimation () {
   await joinCoin()
   // 7. 데이터 업데이트
   await updateData()
-  // 8. 애니메이션 상태 토글
-  await toggleAnimationState()
+
 }
 
 // 카드 생성 (가운데)
@@ -473,7 +465,6 @@ async function createCard() {
     setTimeout(() => {
       resolve() // 생성 완료
     }, 1000)
-    // setTimeList.value.push(time)
   })
 }
 
@@ -487,9 +478,8 @@ async function moveCard() {
   return new Promise(resolve => {
     soundStore.cardshuffleSound()
     setTimeout(() => {
-      resolve(); // 생성 완료
+      resolve();
     }, 1000)
-    // setTimeList.value.push(time)
   })
 }
 
@@ -501,9 +491,8 @@ async function fadeOutCard() {
   }
   return new Promise(resolve => {
     setTimeout(() => {
-      resolve(); // 생성 완료
+      resolve();
     }, 2000)
-    // setTimeList.value.push(time)
   })
 }
 
@@ -515,9 +504,8 @@ async function removeCard() {
         const cardElement = document.getElementById(`card-deck${i}`)
         cardElement.remove()
       }
-      resolve(); // 생성 완료
+      resolve();
     }, 1000)
-    // setTimeList.value.push(time)
   })
 }
 async function removeCardEnd() {
@@ -527,9 +515,8 @@ async function removeCardEnd() {
         const cardElement = document.getElementById(`end-card${i}`)
         cardElement.remove()
       }
-      resolve(); // 생성 완료
+      resolve();
     }, 1000)
-    // setTimeList.value.push(time)
   })
 }
 
@@ -543,9 +530,8 @@ async function filpMyCard() {
   
     return new Promise(resolve => {
       setTimeout(() => {
-        resolve(); // 생성 완료
+        resolve();
       }, 1000)
-      // setTimeList.value.push(time)
     })
   }
 }
@@ -563,9 +549,8 @@ async function flipCard() {
   }
   return new Promise(resolve => {
     setTimeout(() => {
-      resolve(); // 생성 완료
+      resolve();
     }, 1000)
-    // setTimeList.value.push(time)
   })
 }
 
@@ -577,9 +562,8 @@ async function flipCardBack() {
     }
   return new Promise(resolve => {
     setTimeout(() => {
-      resolve(); // 생성 완료
+      resolve();
     }, 1000)
-    // setTimeList.value.push(time)
   })
 }
 
@@ -591,7 +575,6 @@ function endRoundSound () {
     soundStore.loseRoundSound()
   }
 }
-
 
 // 카드 모으기 (라운드 승패 판단)
 async function joinCard () {
@@ -635,7 +618,6 @@ async function joinCard () {
           penaltyTag.innerText = `(패널티: -${info.penaltyCoin}) `
           penaltyTag.style.fontSize = '15px'
           LoserTag.append(penaltyTag)
-          // LoserTag.innerText = `패 (패널티)`
         }
       })
       divTag.appendChild(LoserTag)
@@ -649,14 +631,9 @@ async function joinCard () {
 
   return new Promise(resolve => {
     setTimeout(() => {
-      resolve(); // 생성 완료
+      resolve();
     }, 1000)
-    // setTimeList.value.push(time)
   });
-}
-
-// 코인 배팅
-async function bettingCoin () {
 }
 
 // 코인 이동 (승자에게)
@@ -672,17 +649,13 @@ async function joinCoin(){
   })
   return new Promise(resolve => {
     setTimeout(() => {
-      resolve() // 생성 완료
+      resolve()
     }, 1000)
-    // setTimeList.value.push(time)
   })
 }
 
   // 애니메이션 제거
   onBeforeUnmount(() => {
-    // setTimeList.value.forEach(time => {
-    //   clearTimeout(time)
-    // })
     gameStore.isAnimationRunning = false
     soundStore.mainBgmOn()
   })

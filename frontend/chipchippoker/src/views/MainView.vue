@@ -3,12 +3,14 @@
         <!-- 로고와 방목록 -->
         <div class="m-3">
             <div class="d-flex align-items-center justify-content-center gap-5" style="width: 100%;" >
+                
                 <img @click="reLoad()" type="button" class="small-logo m-0" src="/src/assets/icons/Logo.png" alt="">
                 <div class="d-flex gap-3">
                     <button @click="changeType('경쟁전')" class="btn-outline-yellow p-1 rounded-2" data-bs-toggle="modal" data-bs-target="#FindRoomModal">경쟁 모드</button>
                     <button @click="changeType('친선전')" class="btn-outline-yellow p-1 rounded-2" data-bs-toggle="modal" data-bs-target="#FindRoomModal">친선 모드</button>
                     <button @click="changeType('친선전')" class="btn-outline-yellow p-1 rounded-2" data-bs-toggle="modal" data-bs-target="#makeRoomModal">방 만들기</button>
                     <button class="btn-outline-yellow p-1 rounded-2" data-bs-toggle="modal" data-bs-target="#FindFriendModal">친구 찾기</button>
+                    <!-- <button @click="gameStore.disconnectHandler()">웹소켓 연결끊기</button> -->
                 </div>
             </div>
         </div>
@@ -83,7 +85,7 @@ import ModalCreateRoom from '@/components/Modal/ModalCreateRoom.vue';
 import ModalFindFriend from '@/components/Modal/ModalFindFriend.vue';
 import ModalIsExistRoom from '@/components/Modal/ModalIsExistRoom.vue';
 import { ref, onMounted, watch, computed } from 'vue';
-import { useRouter, onBeforeRouteLeave  } from 'vue-router';
+import { useRoute, useRouter, onBeforeRouteLeave  } from 'vue-router';
 import { useFriendStore } from '@/stores/friend'
 import { useSoundStore } from '@/stores/sound'
 import { useUserStore } from '@/stores/user'
@@ -98,6 +100,7 @@ const gameStore = useGameStore()
 const friendStore = useFriendStore()
 const roomStore = useRoomStore()
 const matchStore = useMatchStore()
+const route = useRoute()
 const router = useRouter()
 const gameType = ref('경쟁전')
 const changeType = function(type){
@@ -132,7 +135,9 @@ const handleShowFindGame = function (payload) {
         .then(code => {
             if (code === '성공') {
                 // modalInstance.show()
-                gameStore.sendMatching(matchStore.title, matchStore.totalParticipantCnt)
+                setTimeout(() => {
+                    gameStore.sendMatching(matchStore.title, matchStore.totalParticipantCnt)
+                }, 200)
             }
         })
     } else {

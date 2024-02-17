@@ -4,7 +4,7 @@
 
       <!-- 1. 타이머 -->
       <div class="row col-4 text-center align-items-center justify-content-center">
-        <!-- <h1>{{ timer }}</h1> -->
+        <h1>{{ timer }}</h1>
         <!-- <div class="timer">
           <div class="mask"></div>
         </div> -->
@@ -60,7 +60,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useGameStore } from '@/stores/game';
 import { useRoomStore } from '@/stores/room';
 import { useUserStore } from '@/stores/user';
@@ -72,10 +72,6 @@ const bettingCoin = ref(0)
 const myGameInfo = ref({})  // 내 게임 정보
 const maxBettingCoin = ref(200)
 const minBettingCoin = ref(0)
-
-// 타이머
-const timer = ref(20)
-const reduceTime = ref()
 
 // 배팅을 했는지 안했는지
 const isBetting = ref(false)
@@ -154,30 +150,16 @@ watch(() => bettingCoin.value, (newValue, oldValue)=>{
 })
 
 
-// 타이머 실행함수
-// const timerSetting = function(){
-//       // 1초마다 한번씩 호출되는 함수
-//   reduceTime.value = setInterval(()=>{
-//       // 만약 timer의 시간이 있다면 1초씩 감소
-//     if (timer.value > 0){
-//       timer.value -= 1
-//       console.log('남은 시간',timer.value)
-//       // 만약 타이머가 0초이고 현재 턴이 나의 턴이라면 다이를 보냄
-//     } else if (gameStore.yourTurn === userStore.myNickname ){
-//       die()
-//       // 타이머가 0초이고 나의 턴이 아닐때는 멈추기
-//     } else{
-//       console.log("멈추기")
-//       clearInterval(reduceTime.value)
-//     }
-//   },1000)
-// }
+// 타이머
+const timer = computed(() => gameStore.timer)
 
-// watch(()=>gameStore.yourTurn,()=>{
-//   timer.value = 20
-//   isBetting.value = false
-//   // timerSetting()
-// })
+// 타이머 감시
+watch(() => timer.value, (newValue, oldValue) => {
+  // 0초가 되면
+  if (newValue == 0 && userStore.myNickname === gameStore.yourTurn) {
+    call()
+  }
+})
 
 gameStore.bettingCoin = bettingCoin.value
 
@@ -213,7 +195,6 @@ const calculateMinBettingCoin = function(){
   minBettingCoin.value = minCoin - myGameInfo.value.bettingCoin
 }
 
-
 // 베팅 Validation ===================================================
 const betValidation = function(){
   // 0 미만의 코인을 베팅하려고 하거나
@@ -242,9 +223,6 @@ const betValidation = function(){
   }
   return true
 }
-
-// ===================================================================
-// 타이머
 
 </script>
 
@@ -289,60 +267,5 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
  // 타이머
- .timer {
-    background: -webkit-linear-gradient(left, skyBlue 50%, #eee 50%);
-    /* Foreground color, Background colour */
-    border-radius: 100%;
-    height: 100px;
-    /* Height and width */
-    position: relative;
-    width: 100px;
-    /* Height and width */
-    animation-name: time;
-    animation-duration: 20s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-}
-.mask {
-    border-radius: 100% 0 0 100% / 50% 0 0 50%;
-    height: 100%;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 50%;
-   
-    animation-name: mask;
-    animation-duration: 20s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    /* Animation time and number of steps (halved) */
-    -webkit-transform-origin: 100% 50%;
-}
-@-webkit-keyframes time {
-    100% {
-        -webkit-transform: rotate(360deg);
-    }
-}
-@-webkit-keyframes mask {
-    0% {
-        background: #eee;
-        /* Background colour */
-        -webkit-transform: rotate(0deg);
-    }
-    50% {
-        background: #eee;
-        /* Background colour */
-        -webkit-transform: rotate(-180deg);
-    }
-    50.01% {
-        background: skyBlue;
-        /* Foreground colour */
-        -webkit-transform: rotate(0deg);
-    }
-    100% {
-        background: skyBlue;
-        /* Foreground colour */
-        -webkit-transform: rotate(-180deg);
-    }
-}
+
 </style>

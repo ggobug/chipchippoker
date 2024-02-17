@@ -68,6 +68,7 @@ router.beforeEach((to, from, next) => {
   } else if (isAuthenticated && (to.name === 'login' || to.name === 'signup' || to.name === 'kakaosignup')) {
     // 사용자가 인증되어 있고, 로그인 페이지 또는 회원가입 페이지로 가려고 할 때
     // 메인 페이지로 리다이렉트
+    userStore.renewToken()
     router.push({ name: 'main' })
   } else {
     // 다른 경우에는 그냥 진행

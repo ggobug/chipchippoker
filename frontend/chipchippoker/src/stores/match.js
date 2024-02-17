@@ -41,7 +41,12 @@ export const useMatchStore = defineStore('match', () => {
       roomStore.title = res.data.title
       roomStore.totalParticipantCnt = res.data.totalParticipantCnt
       openviduStore.joinSession()
-      gameStore.subscribeHandler(title.value)
+      if (gameStore.stompClient.connected === false) {
+        gameStore.connectHandler()
+      }
+      setTimeout(() => {
+        gameStore.subscribeHandler(title.value)
+      }, 500)
       return res.code
     } catch (err) {
       if (err.response.data.code === 'FB010') {
@@ -72,9 +77,17 @@ export const useMatchStore = defineStore('match', () => {
         roomStore.title = res.data.title
         roomStore.totalParticipantCnt = res.data.totalParticipantCnt
         isNotExistRoom.value = false
-        // 대기방으로 이동
-        gameStore.subscribeHandler(title.value)
-        gameStore.sendJoinRoom(title.value)
+        if (gameStore.stompClient.connected === false) {
+          connectHandler()
+        }
+        setTimeout(() => {
+          // 대기방으로 이동
+          gameStore.subscribeHandler(title.value)
+        }, 500)
+
+        setTimeout(()=> {
+          gameStore.sendJoinRoom(title.value)
+        }, 650)
         return true
       }
     } catch (err) {

@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, watch, computed } from "vue";
 import { defineStore } from "pinia";
 import { useRoute, useRouter } from "vue-router";
 
@@ -22,7 +22,7 @@ export const useGameStore = defineStore(
 
     const url = `wss://chipchippoker.shop/chipchippoker`;
 
-    const stompClient = webstomp.client(url);
+    let stompClient = webstomp.client(url);
 
     // 구독 정보
     const subscriptionGame = ref(undefined);
@@ -50,7 +50,7 @@ export const useGameStore = defineStore(
     const isMatchStart = ref(false); // 매치로 시작하는 게임인가
 
     // 배팅 이벤트
-    const bettingEvent = ref(false);
+    const bettingEvent = ref(0);
     const willBettingCoin = ref(0);
 
     // 게임 상태 변수
@@ -90,35 +90,57 @@ export const useGameStore = defineStore(
     // 친구신청 알림
     const isAlarmArrive = ref(false);
 
+    // 타이머
+    const timer = ref(30);
+    let intervalId = null;
+
+    // 타이머 시작
+    function startTimer() {
+      stopTimer()
+      timer.value = 30
+      intervalId = null
+      intervalId = setInterval(() => {
+        if (timer.value > 0) {
+          timer.value--
+        } else {
+          stopTimer(intervalId)
+          if (userStore.myNickname === yourTurn) {
+            alert("시간이 초과됐습니다.")
+          }
+        }
+      }, 1000)
+    }
+
+    // 타이머 중지
+    function stopTimer() {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    }
+    
+    // 타이머 초기화
+    function resetTimer() {
+      intervalId = null
+      timer.value = 30;
+    }
+
     // 웹소켓 디버그 제거
-    // stompClient.debug = null
     stompClient.hasDebug = false
-    // console.log(stompClient);
+
     // 웹소켓 연결 성공 이벤트
     stompClient.ws.onopen = function (params) {
-    };
+    }
 
-    // 웹소켓 연결 끊김 이벤트
-    stompClient.ws.onclose = async function (event) {
-      // console.log('===========================웹소켓 연결 끊김 감지==================================')
-      // 1. 토큰이 있고
-      if (userStore.accessToken) {
-        // 2. 웹소켓 연결, 개인 메시지함 구독
-        await connectHandler();
-        // 2. 게임방 구독 중이고, 대기방인 경우 다시 방 구독
-        if (subscriptionGame.value !== undefined && route.name === "wait") {
-          await subscribeHandler(roomStore.title);
-        } else if (
-          subscriptionGame.value !== undefined &&
-          route.name === "play"
-        ) {
-          window.location.reload();
-        }
-      }
-    };
+    // 웹소켓 연결 끊기
+    const disconnectHandler = async function () {
+      stompClient.disconnect()
+    }
 
     // 웹소켓 연결 핸들러
     const connectHandler = async function () {
+
+      stompClient = webstomp.client(url)
+      stompClient.hasDebug = false
       stompClient.connect(
         { "access-token": userStore.accessToken },
         (frame) => {
@@ -126,7 +148,6 @@ export const useGameStore = defineStore(
           subscriptionPrivate.value = stompClient.subscribe(
             `/from/chipchippoker/member/${userStore.myNickname}`,
             (message) => {
-
               const response = JSON.parse(message.body).body;
               // 개인메세지함 구독 아이디
               myPrivateSubId.value = message.headers.subscription;
@@ -182,7 +203,11 @@ export const useGameStore = defineStore(
                         }
                       }
                     }, 100);
-                  } else if (nextRoundState.value === false) {
+                  }
+                  // 라운드 시작
+                  else if (nextRoundState.value === false) {
+                    stopTimer()
+                    resetTimer()
                     // 새로운 라운드 저장할때는 8초 미루기
                     setTimeout(() => {
                       if (subscriptionGame.value !== undefined) {
@@ -191,29 +216,23 @@ export const useGameStore = defineStore(
                         nextYourTurn.value = response.data.yourTurn;
                         nextGameMemberInfos.value = response.data.gameMemberInfos;
                       }
-                    }, 9500);
-
+                    }, 8000)
                   } else {
                     // 배팅은 0.5초 미루기
-                    setTimeout(() => {
-                      if (subscriptionGame.value !== undefined) {
-                        if (bettingEvent.value === true) {
-                          bettingEvent.value = false
-                        }
-                        bettingEvent.value = true
-                        nextRoundState.value = response.data.roundState;
-                        nextCurrentRound.value = response.data.currentRound;
-                        nextYourTurn.value = response.data.yourTurn;
-                        nextGameMemberInfos.value = response.data.gameMemberInfos;
-                        nextGameMemberInfos.value.forEach((info, index) => {
-                          totalBettingCoin.value[index] = info.bettingCoin;
-                        });
-                      }
-                    }, 500);
+                    if (subscriptionGame.value !== undefined) {
+                      bettingEvent.value += 1
+                      stopTimer()
+                      resetTimer()
+                      startTimer()
+                      nextRoundState.value = response.data.roundState;
+                      nextCurrentRound.value = response.data.currentRound;
+                      nextYourTurn.value = response.data.yourTurn;
+                      nextGameMemberInfos.value = response.data.gameMemberInfos;
+                      nextGameMemberInfos.value.forEach((info, index) => {
+                        totalBettingCoin.value[index] = info.bettingCoin;
+                      })
+                    }
                   }
-                  break;
-                case "MS008": // 라운드 종료
-                  receiveRoundFinish(response.data);
                   break;
                 case "MS012": // 친구요청 받음
                   isAlarmArrive.value = true;
@@ -293,8 +312,8 @@ export const useGameStore = defineStore(
         `/to/game/matching/${title}`,
         JSON.stringify({ countOfPeople }),
         { "access-token": userStore.accessToken }
-      );
-    };
+      )
+    }
 
     // 게임 매칭 RECEIVE
     const receiveMatching = function (data) {
@@ -327,7 +346,7 @@ export const useGameStore = defineStore(
         `/to/game/create/${title}`,
         JSON.stringify({ countOfPeople }),
         { "access-token": userStore.accessToken }
-      );
+      )
     };
 
     // 방 생성 RECEIVE
@@ -346,7 +365,7 @@ export const useGameStore = defineStore(
     const sendJoinRoom = function (gameRoomTitle) {
       stompClient.send(`/to/game/enter/${gameRoomTitle}`, JSON.stringify({}), {
         "access-token": userStore.accessToken,
-      });
+      })
     };
 
     // 게임방 입장 RECEIVE
@@ -367,6 +386,7 @@ export const useGameStore = defineStore(
       stompClient.send(`/to/game/exit/${gameRoomTitle}`, JSON.stringify({}), {
         "access-token": userStore.accessToken,
       });
+      stopTimer()
     };
 
     // 게임방 나가기 RECEIVE
@@ -407,7 +427,7 @@ export const useGameStore = defineStore(
     const sendStartGame = function (gameRoomTitle) {
       stompClient.send(`/to/game/start/${gameRoomTitle}`, JSON.stringify({}), {
         "access-token": userStore.accessToken,
-      });
+      })
     };
 
     // 게임 시작 RECEIVE
@@ -428,7 +448,7 @@ export const useGameStore = defineStore(
         currentRound: currentRound.value,
         action: action,
         bettingCoin: bettingCoin,
-      };
+      }
       stompClient.send(
         `/to/game/betting/${gameRoomTitle}`,
         JSON.stringify(message),
@@ -462,7 +482,6 @@ export const useGameStore = defineStore(
 
     // 라운드 종료
     const receiveRoundFinish = function (data) {
-      // console.log('라운드 종료');
       nextRoundState.value = data?.roundState;
       nextCurrentRound.value = data?.currentRound;
       nextYourTurn.value = data?.yourTurn;
@@ -522,17 +541,11 @@ export const useGameStore = defineStore(
 
     // 방 나가기 시 초기화 함수
     const resetGameStore = async function () {
-      if (
-        subscriptionGame.value !== undefined &&
-        subscriptionGame.value.unsubscribe
-      ) {
-        subscriptionGame.value.unsubscribe();
+      if (subscriptionGame.value !== undefined && subscriptionGame.value.unsubscribe) {
+        subscriptionGame.value.unsubscribe()
       }
-      if (
-        subscriptionSpectation.value !== undefined &&
-        subscriptionSpectation.value.unsubscribe
-      ) {
-        subscriptionSpectation.value.unsubscribe();
+      if ( subscriptionSpectation.value !== undefined && subscriptionSpectation.value.unsubscribe) {
+        subscriptionSpectation.value.unsubscribe()
       }
       firstStart.value = false;
       winnerNickname.value = "";
@@ -561,12 +574,15 @@ export const useGameStore = defineStore(
       nextCurrentRound.value = 0;
       nextYourTurn.value = null;
       nextGameMemberInfos.value = [];
-      bettingEvent.value = false;
+      bettingEvent.value = 0;
       willBettingCoin.value = 0;
       penaltyInfos.value = [];
       nextPenaltyInfos.value = [];
       totalBettingCoin.value = [];
       isAnimationRunning.value = false;
+      stopTimer()
+      resetTimer()
+      timer.value = 30
     };
 
     //---------------------------------------------------관전--------------------------------------------------------
@@ -619,17 +635,20 @@ export const useGameStore = defineStore(
                 firstStart.value = true;
                 setTimeout(() => {
                   if (subscriptionSpectation.value !== undefined) {
-                    nextRoundState.value = response.data.roundState;
-                    nextCurrentRound.value = response.data.currentRound;
-                    nextYourTurn.value = response.data.yourTurn;
-                    nextGameMemberInfos.value = response.data.gameMemberInfos;
-                    nextGameMemberInfos.value.forEach(() => {
-                      totalBettingCoin?.value.push(1);
+                    nextRoundState.value = response.data.roundState
+                    nextCurrentRound.value = response.data.currentRound
+                    nextYourTurn.value = response.data.yourTurn
+                    nextGameMemberInfos.value = response.data.gameMemberInfos
+                    nextGameMemberInfos.value.forEach((info, index) => {
+                      totalBettingCoin?.value.push(1)
+                      totalBettingCoin.value[index] = info.bettingCoin;
                     });
                   }
                 }, 100);
               } else if (nextRoundState.value === false) {
-                // 새로운 라운드 저장할때는 2초 미루기
+                stopTimer()
+                resetTimer()
+                // 라운드 시작 저장할때는 미루기
                 setTimeout(() => {
                   if (subscriptionSpectation.value !== undefined) {
                     nextRoundState.value = response.data.roundState;
@@ -637,14 +656,15 @@ export const useGameStore = defineStore(
                     nextYourTurn.value = response.data.yourTurn;
                     nextGameMemberInfos.value = response.data.gameMemberInfos;
                   }
-                }, 9500);
+                }, 8500);
               } else {
-                // 배팅은 1초 미루기
+                // 배팅은 0.5초 미루기
                 setTimeout(() => {
                   if (subscriptionSpectation.value !== undefined) {
-                    // console.log('배팅 전',bettingEvent.value);
-                    bettingEvent.value = true;
-                    // console.log('배팅 후', bettingEvent.value);
+                    bettingEvent.value += 1
+                    stopTimer()
+                    resetTimer()
+                    startTimer()
                     nextRoundState.value = response.data.roundState;
                     nextCurrentRound.value = response.data.currentRound;
                     nextYourTurn.value = response.data.yourTurn;
@@ -705,6 +725,7 @@ export const useGameStore = defineStore(
       // State
       rooms: ref([]),
       stompClient,
+      disconnectHandler,
       roundState,
       currentRound,
       yourTurn,
@@ -727,6 +748,7 @@ export const useGameStore = defineStore(
 
       // 구독 정보
       subscriptionGame,
+      subscriptionPrivate,
       myGameSubId,
 
       // 게임 상태 변수
@@ -778,6 +800,9 @@ export const useGameStore = defineStore(
 
       // 애니메이션
       isAnimationRunning,
+
+      // 타이머
+      timer, startTimer, stopTimer, resetTimer
     };
   },
   { persist: true }
