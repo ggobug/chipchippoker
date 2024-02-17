@@ -69,7 +69,6 @@
       <div class="h-100 w-50">
         <PlayControllerVue v-if="roomStore.isWatcher === false"/>
         <PlayTalkVue v-else />
-        <!-- <PlayTalkVue /> -->
       </div>
 
       <!-- 이모지 or 로로 -->

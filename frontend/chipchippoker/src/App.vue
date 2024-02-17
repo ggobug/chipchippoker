@@ -110,7 +110,6 @@ for (let i = 0; i < 100; i++) {
         <!-- 유저 아이콘 -->
         <img v-if="showIcon" type="button" class="z-3" @click="goProfile()" :src='userStore.getIconUrl(userStore.myIcon)' style="width: 60px; height: 60px; border-radius: 50%;">
       </div>
-
     
       <div id="app" class="d-flex justify-content-center ">
         <RouterView />

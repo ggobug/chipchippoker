@@ -44,7 +44,7 @@
               class="col-6 mb-5"
               v-for="(player, index) in gameStore.memberInfos"
               :key="index">
-              <div :class="{ 'is-ready': player.isReady }" style="width: 410px; height: 310px;">
+              <div style="width: 410px; height: 310px;">
                 <!-- 다른 사람 캠 -->
                 <UserVideo
                   :stream-manager="findVideo(playersComputed, player.nickname)"
@@ -414,14 +414,6 @@
   font-size: 1.2em;
   align-items: center;
 }
-
-/* 게임 준비 */
-.is-ready {
-  border: 5px solid green; /* 준비가 완료되었을 때의 테두리 색상 */
-  border-radius: 30px;
-  animation: pulse 1s infinite alternate; /* 테두리에 깜빡거리는 애니메이션 효과 */
-}
-
 
 ::-webkit-scrollbar {
   width: 10px; /* 스크롤바 너비 */
