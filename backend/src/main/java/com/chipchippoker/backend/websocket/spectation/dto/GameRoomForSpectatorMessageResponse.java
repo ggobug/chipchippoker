@@ -22,7 +22,7 @@ public class GameRoomForSpectatorMessageResponse {
 	private Integer currentRound;
 	private String yourTurn;
 	private List<GameMemberInfo> gameMemberInfos = new ArrayList<>();
-	private List<String> spectators = new ArrayList<>();
+	private List<String> spectatorList = new ArrayList<>();
 
 	public static GameRoomForSpectatorMessageResponse getCurrentState(GameManager gameManager,
 		SpectationManager spectationManager,
@@ -40,7 +40,7 @@ public class GameRoomForSpectatorMessageResponse {
 			.currentRound(gameManager.getCurrentRound())
 			.yourTurn(gameManager.getOrder().get(gameManager.getTurnNumber()))
 			.gameMemberInfos(result)
-			.spectators(spectationManager.getSpectatorList())
+			.spectatorList(spectationManager.getSpectatorList())
 			.build();
 	}
 }

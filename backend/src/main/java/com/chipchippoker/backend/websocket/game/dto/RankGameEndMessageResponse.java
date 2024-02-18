@@ -1,5 +1,7 @@
 package com.chipchippoker.backend.websocket.game.dto;
 
+import static com.chipchippoker.backend.common.entity.Point.*;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -26,12 +28,9 @@ public class RankGameEndMessageResponse {
 			MemberEndGameInfo memberEndGameInfo = new MemberEndGameInfo(manager.getMemberInfo().getNickname(),
 				manager.getMemberGameInfo().getHaveCoin() == 25 ? "무" :
 					manager.getMemberGameInfo().getHaveCoin() > 25 ? "승" : "패",
-				((manager.getMemberGameInfo().getHaveCoin() / 25) * 10) +
-					(manager.getMemberGameInfo().getHaveCoin() - 25)
-			);
+				(calculatePoint(manager.getMemberGameInfo().getHaveCoin())));
 			result.add(memberEndGameInfo);
 		}
-
 		return RankGameEndMessageResponse.builder()
 			.memberEndGameInfos(result)
 			.build();
