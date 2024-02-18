@@ -293,13 +293,13 @@ export const useRoomStore = defineStore('room', () => {
       })
       .catch(err => {
         console.log(err)
-        // if (err.response.data.code === 'FB001') {
-        //   alert(err.response.data.message)
-        // } else if (err.response.data.code === 'FB011') {
-        //   alert(err.response.data.message)
-        // }
+        if (err?.response?.data?.code === 'FB001') {
+          alert(err?.response?.data?.message)
+        } else if (err?.response?.data?.code === 'FB011') {
+          alert(err?.response?.data?.message)
+        }
       })
-  }
+  } 
 
   // 관전 나가기
   const leaveWatcher = function () {
