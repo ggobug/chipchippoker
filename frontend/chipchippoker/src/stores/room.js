@@ -266,7 +266,9 @@ export const useRoomStore = defineStore('room', () => {
       data: payload
     })
       .then(res => {
+        console.log(res)
         if (res.data.code === '성공') {
+          console.log(res.data)
           roomId.value = res.data.data.roomId
           title.value = res.data.data.title
           roomState.value = res.data.data.state
@@ -274,17 +276,18 @@ export const useRoomStore = defineStore('room', () => {
             gameStore.connectHandler()
           }
         }
-        return res.data
+        return res
+        
       })
-      .then((data)=>{
+      .then((res) => {
         setTimeout(() => {
           gameStore.spectateHandler(title.value)
-        }, 500)
-        return data
+        }, 600)
+        return res
       })
-      .then(data => {
-         setTimeout(() => {
-          gameStore.sendSpectationRoom(data.title, data.state)
+      .then((res) => {
+          // console.log(data);
+          gameStore.sendSpectationRoom(title.value, roomState.value)
           if (roomState.value === '대기') {
             router.push({
               name: 'wait',
@@ -296,15 +299,15 @@ export const useRoomStore = defineStore('room', () => {
               params: { roomId: data.roomId }
             })
           }
-        }, 700)
+          return res
       })
       .catch(err => {
         console.log(err)
-        // if (err.response.data.code === 'FB001') {
-        //   alert(err.response.data.message)
-        // } else if (err.response.data.code === 'FB011') {
-        //   alert(err.response.data.message)
-        // }
+        if (err?.response?.data?.code === 'FB001') {
+          alert(err?.response?.data?.message)
+        }else if (err?.response?.data?.code === 'FB011') {
+          alert(err?.response?.data?.message)
+        }
       })
   }
 
@@ -329,7 +332,12 @@ export const useRoomStore = defineStore('room', () => {
         // 새로고침 횟수를 삭제합니다.
         localStorage.removeItem('refreshCount')
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log(err)
+        openviduStore.leaveSession()
+        gameStore.resetGameStore()
+        router.push({ name: 'main' })
+      })
   }
 
   return {

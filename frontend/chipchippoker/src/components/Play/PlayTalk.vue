@@ -51,6 +51,10 @@
     window.setTimeout(scrollUl, 50);
   });
 
+  onMounted(() => {
+    scrollUl()
+  })
+
 
 
 </script>
