@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExitSpectatorResponse {
-	private List<String> spectators;
+	private List<String> spectatorList;
 
 	public static ExitSpectatorResponse create(List<String> spectators) {
 		return ExitSpectatorResponse.builder()
-			.spectators(spectators)
+			.spectatorList(spectators)
 			.build();
 	}
 }
