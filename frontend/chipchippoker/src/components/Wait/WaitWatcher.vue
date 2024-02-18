@@ -2,7 +2,8 @@
     <div class="watcher-list bg-lightblue h-100 p-2">
         <p>관전자</p>
         <ul class="not-overflow-text">
-            <li v-for="watcher in gameStore.watchersNickname" :key="watcher">{{ watcher }}</li>
+            <li class="" v-for="watcher in gameStore.watchersNickname" :key="watcher">
+                {{ watcher }}</li>
         </ul>
     </div>
 </template>
@@ -10,12 +11,9 @@
 <script setup>
 import { useRoomStore } from '@/stores/room';
 import { computed } from 'vue';
-import { useGameStore } from '../../stores/game';
+import { useGameStore } from '@/stores/game';
 
-
-const roomStore = useRoomStore()
 const gameStore = useGameStore()
-const watchersNickname = computed(() => gameStore.watchersNickname)
 
 </script>
 
@@ -35,6 +33,7 @@ p {
     max-height: 70px; 
     overflow-y: auto;
     /* list-style-type: none; */
+
 }
 
 ::-webkit-scrollbar {
