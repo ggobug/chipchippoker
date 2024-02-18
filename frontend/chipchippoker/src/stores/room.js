@@ -270,21 +270,14 @@ export const useRoomStore = defineStore('room', () => {
           roomId.value = res.data.data.roomId
           title.value = res.data.data.title
           roomState.value = res.data.data.state
-          if (gameStore.stompClient.connected === false) {
-            gameStore.connectHandler()
-          }
+          gameStore.spectateHandler(title.value)
+
         }
         return res.data
       })
-      .then((data)=>{
-        setTimeout(() => {
-          gameStore.spectateHandler(title.value)
-        }, 500)
-        return data
-      })
       .then(data => {
          setTimeout(() => {
-          gameStore.sendSpectationRoom(data.title, data.state)
+          gameStore.sendSpectationRoom(title.value, roomState.value)
           if (roomState.value === '대기') {
             router.push({
               name: 'wait',
