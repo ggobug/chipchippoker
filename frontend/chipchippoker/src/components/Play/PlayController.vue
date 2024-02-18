@@ -4,7 +4,10 @@
 
       <!-- 1. 타이머 -->
       <div class="row col-4 text-center align-items-center justify-content-center">
-        <h1>{{ timer }}</h1>
+        <!-- <h1>{{ timer }}</h1> -->
+        <div class="timer-container" :class="{ 'flash-border': timer <= 10 }">
+          <div id="timer" class="timer">{{ timer }}</div>
+        </div>
         <!-- <div class="timer">
           <div class="mask"></div>
         </div> -->
@@ -267,5 +270,53 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
  // 타이머
+ .timer-container {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  overflow: hidden;
+}
 
+.timer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+@keyframes timerAnimation {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.timer.running {
+  animation: timerAnimation 1s linear infinite;
+}
+
+.flash-border {
+  border: 2px solid red;
+  animation: borderFlashAnimation 0.5s linear infinite;
+}
+
+@keyframes borderFlashAnimation {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 </style>
