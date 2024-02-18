@@ -44,7 +44,7 @@
               class="col-6 mb-5"
               v-for="(player, index) in gameStore.memberInfos"
               :key="index">
-              <div style="width: 410px; height: 310px;">
+              <div style="width: 350px; height: 270px;">
                 <!-- 다른 사람 캠 -->
                 <UserVideo
                   :stream-manager="findVideo(playersComputed, player.nickname)"

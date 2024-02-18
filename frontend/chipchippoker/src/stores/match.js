@@ -15,8 +15,8 @@ export const useMatchStore = defineStore('match', () => {
   const MATCH_API = `${userStore.BASE_API_URL}/matching`
   const router = useRouter()
   
-  const roomId = ref(null)
-  const title = ref(null)
+  const roomId = ref('')
+  const title = ref('')
   const totalParticipantCnt = ref(0)
 
   const isSearching = ref(false)    // 경쟁전 매칭 중
@@ -41,12 +41,7 @@ export const useMatchStore = defineStore('match', () => {
       roomStore.title = res.data.title
       roomStore.totalParticipantCnt = res.data.totalParticipantCnt
       openviduStore.joinSession()
-      if (gameStore.stompClient.connected === false) {
-        gameStore.connectHandler()
-      }
-      setTimeout(() => {
-        gameStore.subscribeHandler(title.value)
-      }, 500)
+      gameStore.subscribeHandler(title.value)
       return res.code
     } catch (err) {
       if (err.response.data.code === 'FB010') {
@@ -77,17 +72,10 @@ export const useMatchStore = defineStore('match', () => {
         roomStore.title = res.data.title
         roomStore.totalParticipantCnt = res.data.totalParticipantCnt
         isNotExistRoom.value = false
-        if (gameStore.stompClient.connected === false) {
-          connectHandler()
-        }
+        gameStore.subscribeHandler(title.value)
         setTimeout(() => {
-          // 대기방으로 이동
-          gameStore.subscribeHandler(title.value)
-        }, 500)
-
-        setTimeout(()=> {
           gameStore.sendJoinRoom(title.value)
-        }, 650)
+        }, 100)
         return true
       }
     } catch (err) {
@@ -107,12 +95,20 @@ export const useMatchStore = defineStore('match', () => {
     })
     .then(response => {
       const res = response.data
+      gameStore.sendExitRoom(title.value)
+      roomId.value = ''
+      title.value = ''
+      totalParticipantCnt.value = 0
+      roomStore.roomId = ''
+      roomStore.title = ''
+      roomStore.totalParticipantCnt = 0
       isSearching.value = false
       // 게임나가기 send
-      gameStore.sendExitRoom(title.value)
+      openviduStore.leaveSession()
+      gameStore.resetGameStore()
     })
     .catch(err => console.log(err))
-  }
+  } 
 
   return {
     // 경쟁전 빠른 시작

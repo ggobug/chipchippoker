@@ -634,46 +634,48 @@ export const useGameStore = defineStore(
               if (firstStart.value === false) {
                 firstStart.value = true;
                 setTimeout(() => {
-                  if (subscriptionSpectation.value !== undefined) {
-                    nextRoundState.value = response.data.roundState
-                    nextCurrentRound.value = response.data.currentRound
-                    nextYourTurn.value = response.data.yourTurn
-                    nextGameMemberInfos.value = response.data.gameMemberInfos
-                    nextGameMemberInfos.value.forEach((info, index) => {
-                      totalBettingCoin?.value.push(1)
-                      totalBettingCoin.value[index] = info.bettingCoin;
-                    });
+                  if (subscriptionGame.value !== undefined) {
+                    nextRoundState.value = response.data.roundState;
+                    nextCurrentRound.value = response.data.currentRound;
+                    nextYourTurn.value = response.data.yourTurn;
+                    nextGameMemberInfos.value =
+                      response.data.gameMemberInfos;
+                    if (totalBettingCoin?.value.length === 0) {
+                      nextGameMemberInfos.value.forEach(() => {
+                        totalBettingCoin?.value.push(1);
+                      });
+                    }
                   }
                 }, 100);
-              } else if (nextRoundState.value === false) {
+              }
+              // 라운드 시작
+              else if (nextRoundState.value === false) {
                 stopTimer()
                 resetTimer()
-                // 라운드 시작 저장할때는 미루기
+                // 새로운 라운드 저장할때는 8초 미루기
                 setTimeout(() => {
-                  if (subscriptionSpectation.value !== undefined) {
+                  if (subscriptionGame.value !== undefined) {
                     nextRoundState.value = response.data.roundState;
                     nextCurrentRound.value = response.data.currentRound;
                     nextYourTurn.value = response.data.yourTurn;
                     nextGameMemberInfos.value = response.data.gameMemberInfos;
                   }
-                }, 8500);
+                }, 8000)
               } else {
                 // 배팅은 0.5초 미루기
-                setTimeout(() => {
-                  if (subscriptionSpectation.value !== undefined) {
-                    bettingEvent.value += 1
-                    stopTimer()
-                    resetTimer()
-                    startTimer()
-                    nextRoundState.value = response.data.roundState;
-                    nextCurrentRound.value = response.data.currentRound;
-                    nextYourTurn.value = response.data.yourTurn;
-                    nextGameMemberInfos.value = response.data.gameMemberInfos;
-                    nextGameMemberInfos.value.forEach((info, index) => {
-                      totalBettingCoin.value[index] = info.bettingCoin;
-                    });
-                  }
-                }, 500);
+                if (subscriptionGame.value !== undefined) {
+                  bettingEvent.value += 1
+                  stopTimer()
+                  resetTimer()
+                  startTimer()
+                  nextRoundState.value = response.data.roundState;
+                  nextCurrentRound.value = response.data.currentRound;
+                  nextYourTurn.value = response.data.yourTurn;
+                  nextGameMemberInfos.value = response.data.gameMemberInfos;
+                  nextGameMemberInfos.value.forEach((info, index) => {
+                    totalBettingCoin.value[index] = info.bettingCoin;
+                  })
+                }
               }
               break;
             case "MS008": // 라운드 종료
@@ -717,6 +719,7 @@ export const useGameStore = defineStore(
 
     // 관전 나가기 RECEIVE
     const receiveSpectaionExit = function (data) {
+      console.log(data)
       watchersNickname.value = data.spectatorList;
     };
     //---------------------------------------------------관전--------------------------------------------------------
