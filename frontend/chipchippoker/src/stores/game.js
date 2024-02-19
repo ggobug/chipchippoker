@@ -91,13 +91,13 @@ export const useGameStore = defineStore(
     const isAlarmArrive = ref(false);
 
     // 타이머
-    const timer = ref(30);
+    const timer = ref(20);
     let intervalId = null;
 
     // 타이머 시작
     function startTimer() {
       stopTimer()
-      timer.value = 30
+      timer.value = 20
       intervalId = null
       intervalId = setInterval(() => {
         if (timer.value > 0) {
@@ -121,7 +121,7 @@ export const useGameStore = defineStore(
     // 타이머 초기화
     function resetTimer() {
       intervalId = null
-      timer.value = 30;
+      timer.value = 20;
     }
 
     // 웹소켓 디버그 제거
@@ -208,7 +208,7 @@ export const useGameStore = defineStore(
                   else if (nextRoundState.value === false) {
                     stopTimer()
                     resetTimer()
-                    // 새로운 라운드 저장할때는 8초 미루기
+                    // 새로운 라운드 저장할때는 9초 미루기
                     setTimeout(() => {
                       if (subscriptionGame.value !== undefined) {
                         nextRoundState.value = response.data.roundState;
@@ -216,7 +216,7 @@ export const useGameStore = defineStore(
                         nextYourTurn.value = response.data.yourTurn;
                         nextGameMemberInfos.value = response.data.gameMemberInfos;
                       }
-                    }, 8000)
+                    }, 9000)
                   } else {
                     // 배팅은 0.5초 미루기
                     if (subscriptionGame.value !== undefined) {
@@ -582,7 +582,7 @@ export const useGameStore = defineStore(
       isAnimationRunning.value = false;
       stopTimer()
       resetTimer()
-      timer.value = 30
+      timer.value = 20
     };
 
     //---------------------------------------------------관전--------------------------------------------------------
@@ -652,7 +652,7 @@ export const useGameStore = defineStore(
               else if (nextRoundState.value === false) {
                 stopTimer()
                 resetTimer()
-                // 새로운 라운드 저장할때는 8초 미루기
+                // 새로운 라운드 저장할때는 9초 미루기
                 setTimeout(() => {
                   if (subscriptionGame.value !== undefined) {
                     nextRoundState.value = response.data.roundState;
@@ -660,7 +660,7 @@ export const useGameStore = defineStore(
                     nextYourTurn.value = response.data.yourTurn;
                     nextGameMemberInfos.value = response.data.gameMemberInfos;
                   }
-                }, 8000)
+                }, 9000)
               } else {
                 // 배팅은 0.5초 미루기
                 if (subscriptionGame.value !== undefined) {
